@@ -42,9 +42,9 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label id="tipps" fx:id="tipps" alignment="TOP_LEFT" layoutX="10.0" layoutY="136.0" prefHeight="105.0" prefWidth="264.0" visible="false">
+            <Label id="hints" fx:id="hints" contentDisplay="CENTER" focusTraversable="false" layoutX="10.0" layoutY="136.0" prefHeight="105.0" prefWidth="264.0" wrapText="true">
                <font>
-                  <Font size="15.0" />
+                  <Font size="12.0" />
                </font>
             </Label>
             <Button layoutX="97.0" layoutY="251.0" mnemonicParsing="false" onAction="#checkNumbersAction" prefHeight="39.0" prefWidth="94.0" text="Check" />

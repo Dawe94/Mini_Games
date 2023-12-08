@@ -31,6 +31,8 @@ public class MainController implements Initializable{
     private TextField input3;
     @FXML
     private TextField input4;
+    @FXML
+    private Label hints;
 //</editor-fold>
 
     @FXML
@@ -52,13 +54,13 @@ public class MainController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         numbers = generateNumbers(numbers.length);
+        hints.setText(getHints());
     }
     
     private void setValues(int index, TextField tf) {
         if (inputNumbers[index] != numbers[index]) {
             try {
                 inputNumbers[index] = Integer.parseInt(tf.getText().substring(0,1));
-                tf.setText(inputNumbers[index]+"");
             } catch (Exception ex) {
                 basePane.setDisable(true);
                 basePane.setOpacity(0.3);
@@ -66,6 +68,28 @@ public class MainController implements Initializable{
                 alertLabel.setText("Invalid input!");
             }
         }
+        tf.setText(inputNumbers[index]+"");
+        setColor(index, tf);
+        System.out.println("Generated: "+Arrays.toString(numbers)+" My numbers: "+Arrays.toString(inputNumbers));
+    }
+    
+    private void setColor(int index, TextField tf) {
+        if (inputNumbers[index] == numbers[index]) {         
+            tf.setStyle("-fx-text-fill: green;");
+        } else if (contains(inputNumbers[index])) {
+            tf.setStyle("-fx-text-fill: orange;");
+        } else {
+            tf.setStyle("-fx-text-fill: red;");
+        }    
+    }
+    
+    private boolean contains(int input) {
+        for (int i = 0; i < numbers.length; i++) {
+            if (input == numbers[i]) {
+                return true;
+            }
+        }
+        return false;
     }
     
     private int[] getInputNumbers() {
@@ -75,7 +99,7 @@ public class MainController implements Initializable{
             array[1] = Integer.parseInt(input2.getText().substring(0,1));
             array[2] = Integer.parseInt(input3.getText().substring(0,1));
             array[3] = Integer.parseInt(input4.getText().substring(0,1));
-            System.out.println(Arrays.toString(numbers)+Arrays.equals(array, numbers));
+            
         } catch (Exception ex) {
             basePane.setDisable(true);
             basePane.setOpacity(0.3);
@@ -83,6 +107,24 @@ public class MainController implements Initializable{
             alertLabel.setText("Invalid input!");
         }
         return array;
+    }
+    
+    private String getHints() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("The first number is ").append(relation(numbers[0], numbers[1])).append(" the second."+"\n");
+        sb.append("The second number is ").append(relation(numbers[1], numbers[2])).append(" the third."+"\n");
+        sb.append("The third number is ").append(relation(numbers[2], numbers[3])).append(" the fourth."+"\n");
+        return sb.toString();
+    }
+    
+    private String relation(int first, int second) {
+        if (first < second) {
+            return "smaller than";
+        } else if (first > second) {
+            return "bigger than";
+        } else {
+            return "is the same as";
+        }
     }
     
     private int[] generateNumbers(int length) {
