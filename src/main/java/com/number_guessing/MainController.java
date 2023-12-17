@@ -1,9 +1,12 @@
 package com.number_guessing;
 
 import java.net.URL;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -14,7 +17,7 @@ public class MainController implements Initializable{
 
     private final Random RANDOM = new Random();
     private int[] numbers = new int[4];
-    private final int[] inputNumbers = {-1, -1, -1, -1};
+    private final List<TextField> inputs = new ArrayList<>();
     private int round;
     
     //<editor-fold defaultstate="collapsed" desc="FXML Objects">
@@ -42,10 +45,9 @@ public class MainController implements Initializable{
 
     @FXML
     public void checkNumbersAction() {
-        setValues(0, input1);
-        setValues(1, input2);
-        setValues(2, input3);
-        setValues(3, input4);
+        for (int i = 0; i < inputs.size(); i++) {
+            setValues(i, inputs.get(i));
+        }
     }
     
     @FXML
@@ -66,31 +68,23 @@ public class MainController implements Initializable{
     public void initialize(URL url, ResourceBundle rb) {
         numbers = generateNumbers(numbers.length);
         hints.setText(getHints());
+        inputsAsCollection();
+        setListener();
     }
     
     private void setValues(int index, TextField tf) {
-        if (inputNumbers[index] != numbers[index]) {
-            try {
-                inputNumbers[index] = Integer.parseInt(tf.getText().substring(0,1));
-            } catch (Exception ex) {
-                basePane.setDisable(true);
-                basePane.setOpacity(0.3);
-                alertPane.setVisible(true);
-                alertLabel.setText("Invalid input!");
-            }
-        } else {
+        if (Integer.parseInt(tf.getText()) == numbers[index]) {
             tf.setDisable(true);
+            tf.setText(tf.getText());
         }
-        tf.setText(inputNumbers[index]+"");
         setColor(index, tf);
-        System.out.println("Generated: "+Arrays.toString(numbers)+" My numbers: "+Arrays.toString(inputNumbers));
         round++;
     }
     
     private void setColor(int index, TextField tf) {
-        if (inputNumbers[index] == numbers[index]) {         
+        if (Integer.parseInt(tf.getText()) == numbers[index]) {         
             tf.setStyle("-fx-text-fill: green;");
-        } else if (contains(inputNumbers[index])) {
+        } else if (contains(Integer.parseInt(tf.getText()))) {
             tf.setStyle("-fx-text-fill: orange;");
         } else {
             tf.setStyle("-fx-text-fill: red;");
@@ -131,5 +125,25 @@ public class MainController implements Initializable{
             array[i] = RANDOM.nextInt(10);
         }
         return array;
+    }
+
+    private void inputsAsCollection() {
+        inputs.add(input1);
+        inputs.add(input2);
+        inputs.add(input3);
+        inputs.add(input4);
+    }
+
+    private void setListener() {
+        for (TextField tf : inputs) {
+            tf.textProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                    if (newValue.length() > 1 || !newValue.matches("^\\d$")) {
+                        tf.clear();
+                    }
+                }
+            });
+        }
     }
 }
