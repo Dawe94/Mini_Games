@@ -14,7 +14,8 @@ public class MainController implements Initializable{
 
     private final Random RANDOM = new Random();
     private int[] numbers = new int[4];
-    private int[] inputNumbers = {-1, -1, -1, -1};
+    private final int[] inputNumbers = {-1, -1, -1, -1};
+    private int round;
     
     //<editor-fold defaultstate="collapsed" desc="FXML Objects">
     @FXML
@@ -23,6 +24,10 @@ public class MainController implements Initializable{
     private Pane alertPane;
     @FXML
     private Label alertLabel;
+    @FXML
+    private Pane resultPane;
+    @FXML
+    private Label resultLabel;
     @FXML
     private TextField input1;
     @FXML
@@ -41,12 +46,18 @@ public class MainController implements Initializable{
         setValues(1, input2);
         setValues(2, input3);
         setValues(3, input4);
-        //int[] inputs = getInputNumbers();
-        //System.out.println("nums: "+Arrays.toString(inputs));
     }
     
+    @FXML
     public void handleAlertButton() {
         alertPane.setVisible(false);
+        basePane.setDisable(false);
+        basePane.setOpacity(1);
+    }
+    
+    @FXML
+    public void handleResultButton() {
+        resultPane.setVisible(false);
         basePane.setDisable(false);
         basePane.setOpacity(1);
     }
@@ -67,10 +78,13 @@ public class MainController implements Initializable{
                 alertPane.setVisible(true);
                 alertLabel.setText("Invalid input!");
             }
+        } else {
+            tf.setDisable(true);
         }
         tf.setText(inputNumbers[index]+"");
         setColor(index, tf);
         System.out.println("Generated: "+Arrays.toString(numbers)+" My numbers: "+Arrays.toString(inputNumbers));
+        round++;
     }
     
     private void setColor(int index, TextField tf) {
@@ -92,28 +106,12 @@ public class MainController implements Initializable{
         return false;
     }
     
-    private int[] getInputNumbers() {
-        int[] array = new int[4];
-        try {
-            array[0] = Integer.parseInt(input1.getText().substring(0,1));
-            array[1] = Integer.parseInt(input2.getText().substring(0,1));
-            array[2] = Integer.parseInt(input3.getText().substring(0,1));
-            array[3] = Integer.parseInt(input4.getText().substring(0,1));
-            
-        } catch (Exception ex) {
-            basePane.setDisable(true);
-            basePane.setOpacity(0.3);
-            alertPane.setVisible(true);
-            alertLabel.setText("Invalid input!");
-        }
-        return array;
-    }
-    
     private String getHints() {
         StringBuilder sb = new StringBuilder();
-        sb.append("The first number is ").append(relation(numbers[0], numbers[1])).append(" the second."+"\n");
-        sb.append("The second number is ").append(relation(numbers[1], numbers[2])).append(" the third."+"\n");
-        sb.append("The third number is ").append(relation(numbers[2], numbers[3])).append(" the fourth."+"\n");
+        sb.append("The first number is ").append(relation(numbers[0], numbers[1])).append(" the second number."+"\n");
+        sb.append("The second number is ").append(relation(numbers[1], numbers[2])).append(" the third number."+"\n");
+        sb.append("The third number is ").append(relation(numbers[2], numbers[3])).append(" the last number."+"\n");
+        sb.append("The last number is ").append(relation(numbers[3], numbers[0])).append(" the first number."+"\n");
         return sb.toString();
     }
     
@@ -123,7 +121,7 @@ public class MainController implements Initializable{
         } else if (first > second) {
             return "bigger than";
         } else {
-            return "is the same as";
+            return "the same as";
         }
     }
     

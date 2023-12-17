@@ -42,7 +42,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label id="hints" fx:id="hints" contentDisplay="CENTER" focusTraversable="false" layoutX="10.0" layoutY="136.0" prefHeight="105.0" prefWidth="264.0" wrapText="true">
+            <Label id="hints" fx:id="hints" contentDisplay="CENTER" focusTraversable="false" layoutX="3.0" layoutY="136.0" prefHeight="105.0" prefWidth="278.0" wrapText="true">
                <font>
                   <Font size="12.0" />
                </font>
@@ -55,6 +55,17 @@
             <Rectangle arcHeight="50.0" arcWidth="50.0" fill="#d4d7da" height="150.0" stroke="BLACK" strokeType="INSIDE" width="264.0" />
             <Label id="alertLabel" fx:id="alertLabel" alignment="CENTER" layoutX="23.0" layoutY="22.0" prefHeight="77.0" prefWidth="222.0" textFill="#eb0909" />
             <Button layoutX="98.0" layoutY="105.0" mnemonicParsing="false" onAction="#handleAlertButton" prefHeight="31.0" prefWidth="69.0" text="Ok!" />
+         </children>
+      </Pane>
+      <Pane id="resultPane" fx:id="resultPane" layoutX="27.0" layoutY="101.0" prefHeight="177.0" prefWidth="271.0" visible="false">
+         <children>
+            <Rectangle arcHeight="50.0" arcWidth="50.0" fill="#c8ccd0" height="177.0" stroke="BLACK" strokeType="INSIDE" width="271.0" />
+            <Label id="resultLabel" fx:id="resultLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="25.0" layoutY="35.0" prefHeight="39.0" prefWidth="222.0" textAlignment="CENTER" visible="false">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Button layoutX="102.0" layoutY="117.0" mnemonicParsing="false" onAction="#handleResultButton" prefHeight="31.0" prefWidth="69.0" text="Ok!" />
          </children>
       </Pane>
    </children>
