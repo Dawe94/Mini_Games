@@ -43,11 +43,11 @@ public class Numbers {
     
     private void color(int index, TextField tf) {
         if (Objects.equals(Integer.valueOf(tf.getText()), numbers.get(index))) {         
-            tf.setStyle("-fx-text-fill: green;");
+            tf.setStyle("-fx-text-fill: green; -fx-background-color: #dcdcdc");
         } else if (numbers.contains(Integer.valueOf(tf.getText()))) {
-            tf.setStyle("-fx-text-fill: orange;");
+            tf.setStyle("-fx-text-fill: orange; -fx-background-color: #dcdcdc;");
         } else {
-            tf.setStyle("-fx-text-fill: red;");
+            tf.setStyle("-fx-text-fill: red; -fx-background-color: #dcdcdc;");
         }    
     }
     
