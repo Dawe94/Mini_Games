@@ -39,7 +39,11 @@ public class MainController implements Initializable{
     @FXML
     private TextField input4;
     @FXML
-    private Label hints;
+    private Label relationLabel1;
+    @FXML
+    private Label relationLabel2;
+    @FXML
+    private Label relationLabel3;
 //</editor-fold>
 
     @FXML
@@ -64,22 +68,19 @@ public class MainController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         numbers = Numbers.generate();
-        hints.setText(getHints());
+        getRelations();
         inputsAsCollection();
         setListener();
     }
     
-    private String getHints() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("The first number is ").append(relation(numbers.get(0), numbers.get(1))).append(" the second number."+"\n");
-        sb.append("The second number is ").append(relation(numbers.get(1), numbers.get(2))).append(" the third number."+"\n");
-        sb.append("The third number is ").append(relation(numbers.get(2), numbers.get(3))).append(" the last number."+"\n");
-        sb.append("The last number is ").append(relation(numbers.get(3), numbers.get(0))).append(" the first number."+"\n");
-        return sb.toString();
+    private void getRelations() {
+        relationLabel1.setText(relation(numbers.get(0), numbers.get(1)));
+        relationLabel2.setText(relation(numbers.get(1), numbers.get(2)));
+        relationLabel3.setText(relation(numbers.get(2), numbers.get(3)));
     }
     
     private String relation(int first, int second) {
-        return first < second ? "smaller than" : "bigger than";
+        return first < second ? "<" : ">";
     }
 
     private void inputsAsCollection() {

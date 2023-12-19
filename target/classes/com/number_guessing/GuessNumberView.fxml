@@ -13,23 +13,38 @@
    <children>
       <Pane id="basePane" fx:id="basePane" layoutX="19.0" layoutY="14.0">
          <children>
-            <HBox layoutY="53.0" spacing="35.0">
+            <HBox layoutY="53.0">
                <children>
                   <TextField id="input1" fx:id="input1" prefHeight="48.0" prefWidth="45.0">
                      <font>
                         <Font size="25.0" />
                      </font>
                   </TextField>
+                  <Label id="relationLabel1" fx:id="relationLabel1" alignment="CENTER" prefHeight="48.0" prefWidth="35.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
                   <TextField id="input2" fx:id="input2" prefHeight="48.0" prefWidth="45.0">
                      <font>
                         <Font size="25.0" />
                      </font>
                   </TextField>
+                  <Label id="relationLabel2" fx:id="relationLabel2" alignment="CENTER" prefHeight="48.0" prefWidth="35.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
                   <TextField id="input3" fx:id="input3" prefHeight="48.0" prefWidth="45.0">
                      <font>
                         <Font size="25.0" />
                      </font>
                   </TextField>
+                  <Label id="relationLabel3" fx:id="relationLabel3" alignment="CENTER" prefHeight="48.0" prefWidth="35.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
                   <TextField id="input4" fx:id="input4" prefHeight="48.0" prefWidth="45.0">
                      <font>
                         <Font size="25.0" />
@@ -40,11 +55,6 @@
             <Label alignment="CENTER" layoutX="25.0" prefHeight="39.0" prefWidth="237.0" text="Guess Number" textAlignment="CENTER">
                <font>
                   <Font size="20.0" />
-               </font>
-            </Label>
-            <Label id="hints" fx:id="hints" contentDisplay="CENTER" focusTraversable="false" layoutX="3.0" layoutY="136.0" prefHeight="105.0" prefWidth="278.0" wrapText="true">
-               <font>
-                  <Font size="12.0" />
                </font>
             </Label>
             <Button layoutX="97.0" layoutY="251.0" mnemonicParsing="false" onAction="#checkNumbersAction" prefHeight="39.0" prefWidth="94.0" text="Check" />
