@@ -79,13 +79,7 @@ public class MainController implements Initializable{
     }
     
     private String relation(int first, int second) {
-        if (first < second) {
-            return "smaller than";
-        } else if (first > second) {
-            return "bigger than";
-        } else {
-            return "the same as";
-        }
+        return first < second ? "smaller than" : "bigger than";
     }
 
     private void inputsAsCollection() {

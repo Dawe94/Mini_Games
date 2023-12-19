@@ -2,9 +2,11 @@
 package com.number_guessing;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.Set;
 import javafx.scene.control.TextField;
 
 public class Numbers {
@@ -12,11 +14,11 @@ public class Numbers {
     private static final Random RANDOM = new Random();
     
     public static Numbers generate() {
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            list.add(RANDOM.nextInt(10));
+        Set<Integer> set = new LinkedHashSet<>();
+        while (set.size() < 4) {
+            set.add(RANDOM.nextInt(10));
         }
-        return new Numbers(list);
+        return new Numbers(new ArrayList<>(set));
     }
     
     private final List<Integer> numbers;
