@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 public class Numbers {
     
     private static final Random RANDOM = new Random();
+    private int numOfCorrectNumbers;
     
     public static Numbers generate() {
         Set<Integer> set = new LinkedHashSet<>();
@@ -31,19 +32,23 @@ public class Numbers {
         return numbers.get(index);
     }
     
-    public void check(List<TextField> inputNumbers) throws InvalidNumbersException {
+    public boolean check(List<TextField> inputNumbers) throws InvalidNumbersException {
         int index = 0;
         try {
         for (; index < numbers.size(); index++) {
+            if (inputNumbers.get(index).isDisabled()) continue;
             if (Objects.equals(Integer.valueOf(inputNumbers.get(index).getText()), numbers.get(index))) {
                 inputNumbers.get(index).setDisable(true);
                 inputNumbers.get(index).setText(inputNumbers.get(index).getText());
+                numOfCorrectNumbers++;
             }
             color(index, inputNumbers.get(index));
         }
+        if (numOfCorrectNumbers >= inputNumbers.size()) return true;
         } catch (Exception ex) {
             throw new InvalidNumbersException("Exception while check "+ ++index+"-th TextField!");
         }
+        return false;
     }
     
     private void color(int index, TextField tf) {

@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 public class MainController implements Initializable{
 
@@ -45,7 +46,11 @@ public class MainController implements Initializable{
     @FXML
     public void checkNumbersAction() {
         try {
-            numbers.check(inputs);
+            if (numbers.check(inputs)) {
+                getResult("Congratulation! You Win!", Color.GREEN);
+            } else if (++round >= 4) {
+                getResult("You Lose!", Color.RED);
+            }
         } catch (InvalidNumbersException ex) {
             basePane.setDisable(true);
             basePane.setOpacity(0.3);
@@ -70,6 +75,7 @@ public class MainController implements Initializable{
         getRelations();
         inputsAsCollection();
         setListener();
+        round = 0;
     }
     
     private void getRelations() {
@@ -100,5 +106,13 @@ public class MainController implements Initializable{
                 }
             });
         }
+    }
+
+    private void getResult(String result, Color color) {
+        basePane.setDisable(true);
+        basePane.setOpacity(0.3);
+        userInfoPane.setVisible(true);
+        userInfoLabel.setText(result);
+        userInfoLabel.setTextFill(color);
     }
 }
