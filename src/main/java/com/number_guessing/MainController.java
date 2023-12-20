@@ -3,7 +3,6 @@ package com.number_guessing;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,6 +14,7 @@ import javafx.scene.layout.Pane;
 
 public class MainController implements Initializable{
 
+    private final String MISSING_NUMBER = "You have to write a number in all of number fields!";
     private Numbers numbers;
     private final List<TextField> inputs = new ArrayList<>();
     private int round;
@@ -48,12 +48,20 @@ public class MainController implements Initializable{
 
     @FXML
     public void checkNumbersAction() {
-        numbers.check(inputs);
+        try {
+            numbers.check(inputs);
+        } catch (InvalidNumbersException ex) {
+            basePane.setDisable(true);
+            basePane.setOpacity(0.3);
+            alertPane.setVisible(true);
+            alertLabel.setText(MISSING_NUMBER);
+        }
     }
     
     @FXML
     public void handleAlertButton() {
         alertPane.setVisible(false);
+        alertLabel.setText("");
         basePane.setDisable(false);
         basePane.setOpacity(1);
     }

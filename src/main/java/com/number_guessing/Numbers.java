@@ -31,13 +31,18 @@ public class Numbers {
         return numbers.get(index);
     }
     
-    public void check(List<TextField> inputNumbers) {
-        for (int index = 0; index < numbers.size(); index++) {
-        if (Objects.equals(Integer.valueOf(inputNumbers.get(index).getText()), numbers.get(index))) {
-            inputNumbers.get(index).setDisable(true);
-            inputNumbers.get(index).setText(inputNumbers.get(index).getText());
+    public void check(List<TextField> inputNumbers) throws InvalidNumbersException {
+        int index = 0;
+        try {
+        for (; index < numbers.size(); index++) {
+            if (Objects.equals(Integer.valueOf(inputNumbers.get(index).getText()), numbers.get(index))) {
+                inputNumbers.get(index).setDisable(true);
+                inputNumbers.get(index).setText(inputNumbers.get(index).getText());
+            }
+            color(index, inputNumbers.get(index));
         }
-        color(index, inputNumbers.get(index));
+        } catch (Exception ex) {
+            throw new InvalidNumbersException("Exception while check "+ ++index+"-th TextField!");
         }
     }
     
