@@ -10,16 +10,23 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class MainController implements Initializable{
 
+    //<editor-fold defaultstate="collapsed" desc="Variables">
     private final String MISSING_NUMBER = "You have to write a number in all of number fields!";
     private Numbers numbers;
     private final List<TextField> inputs = new ArrayList<>();
     private int round;
     private boolean gameOver;
+    private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("GOLD-BARS.jpg"));
+    private final Image LOSE_IMAGE = new Image(getClass().getResourceAsStream("policeCar.jpg"));
+//</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="FXML Objects">
     @FXML
@@ -42,22 +49,24 @@ public class MainController implements Initializable{
     private Label relationLabel2;
     @FXML
     private Label relationLabel3;
+    @FXML
+    private ImageView resultImage;
 //</editor-fold>
 
     @FXML
     public void checkNumbersAction() {
         try {
             if (numbers.check(inputs)) {
-                getResult("Congratulation! You Win!", Color.GREEN);
+                getResult("Congratulation! You Win!", Color.GREEN, WIN_IMAGE);
             } else if (++round >= 4) {
-                getResult("You Lose!", Color.RED);
+                getResult("You Lose!", Color.RED, LOSE_IMAGE);
             }
         } catch (InvalidNumbersException ex) {
             basePane.setDisable(true);
             basePane.setOpacity(0.3);
             userInfoPane.setVisible(true);
             userInfoLabel.setText(MISSING_NUMBER);
-            userInfoLabel.setStyle("-fx-text-fill:red;");
+            userInfoLabel.setTextFill(Color.RED);
         }
     }
     
@@ -65,7 +74,7 @@ public class MainController implements Initializable{
     public void handleInfoOkButton() {
         userInfoPane.setVisible(false);
         userInfoLabel.setText("");
-        userInfoLabel.setStyle("-fx-text-fill:black;");
+        userInfoLabel.setTextFill(Color.BLACK);
         basePane.setDisable(false);
         basePane.setOpacity(1);
         if (gameOver) {
@@ -111,13 +120,16 @@ public class MainController implements Initializable{
         }
     }
 
-    private void getResult(String result, Color color) {
+    private void getResult(String result, Color color, Image image) {
         basePane.setDisable(true);
         basePane.setOpacity(0.3);
         userInfoPane.setVisible(true);
+        userInfoLabel.setFont(new Font(24));
         userInfoLabel.setText(result);
         userInfoLabel.setTextFill(color);
         gameOver = true;
+        resultImage.setVisible(true);
+        resultImage.setImage(image);      
     }
 
     private void restore() {
@@ -125,6 +137,8 @@ public class MainController implements Initializable{
         gameOver = true;
         round = 0;
         numbers = Numbers.generate();
+        resultImage.setVisible(false);
+        userInfoLabel.setFont(new Font(14));
         getRelations();
         for (TextField tf : inputs) {
             tf.clear();
