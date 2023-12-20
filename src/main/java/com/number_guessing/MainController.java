@@ -19,6 +19,7 @@ public class MainController implements Initializable{
     private Numbers numbers;
     private final List<TextField> inputs = new ArrayList<>();
     private int round;
+    private boolean gameOver;
     
     //<editor-fold defaultstate="collapsed" desc="FXML Objects">
     @FXML
@@ -67,6 +68,9 @@ public class MainController implements Initializable{
         userInfoLabel.setStyle("-fx-text-fill:black;");
         basePane.setDisable(false);
         basePane.setOpacity(1);
+        if (gameOver) {
+            restore();
+        }
     }
     
     @Override
@@ -75,7 +79,6 @@ public class MainController implements Initializable{
         getRelations();
         inputsAsCollection();
         setListener();
-        round = 0;
     }
     
     private void getRelations() {
@@ -114,5 +117,19 @@ public class MainController implements Initializable{
         userInfoPane.setVisible(true);
         userInfoLabel.setText(result);
         userInfoLabel.setTextFill(color);
+        gameOver = true;
+    }
+
+    private void restore() {
+        System.out.println(numbers.toString());
+        gameOver = true;
+        round = 0;
+        numbers = Numbers.generate();
+        getRelations();
+        for (TextField tf : inputs) {
+            tf.clear();
+            tf.setStyle("-fx-text-fill:black; -fx-background-color: #dcdcdc;");
+            tf.setDisable(false);
+        }
     }
 }

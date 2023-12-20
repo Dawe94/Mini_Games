@@ -16,7 +16,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("GuessNumberView.fxml"));
         scene = new Scene(root);
-        stage.setTitle("Guess Numbers!");
+        stage.setTitle("Guess Number!");
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
+import java.util.StringJoiner;
 import javafx.scene.control.TextField;
 
 public class Numbers {
@@ -59,6 +60,15 @@ public class Numbers {
         } else {
             tf.setStyle("-fx-text-fill: red; -fx-background-color: #dcdcdc;");
         }    
+    }
+    
+    @Override
+    public String toString() {
+        StringJoiner sj = new StringJoiner(", ");
+        for (Integer number : numbers) {
+            sj.add(number.toString());
+        }
+        return sj.toString();
     }
     
 }
