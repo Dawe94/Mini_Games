@@ -23,13 +23,9 @@ public class MainController implements Initializable{
     @FXML
     private Pane basePane;
     @FXML
-    private Pane alertPane;
+    private Pane userInfoPane;
     @FXML
-    private Label alertLabel;
-    @FXML
-    private Pane resultPane;
-    @FXML
-    private Label resultLabel;
+    private Label userInfoLabel;
     @FXML
     private TextField input1;
     @FXML
@@ -53,22 +49,17 @@ public class MainController implements Initializable{
         } catch (InvalidNumbersException ex) {
             basePane.setDisable(true);
             basePane.setOpacity(0.3);
-            alertPane.setVisible(true);
-            alertLabel.setText(MISSING_NUMBER);
+            userInfoPane.setVisible(true);
+            userInfoLabel.setText(MISSING_NUMBER);
+            userInfoLabel.setStyle("-fx-text-fill:red;");
         }
     }
     
     @FXML
-    public void handleAlertButton() {
-        alertPane.setVisible(false);
-        alertLabel.setText("");
-        basePane.setDisable(false);
-        basePane.setOpacity(1);
-    }
-    
-    @FXML
-    public void handleResultButton() {
-        resultPane.setVisible(false);
+    public void handleInfoOkButton() {
+        userInfoPane.setVisible(false);
+        userInfoLabel.setText("");
+        userInfoLabel.setStyle("-fx-text-fill:black;");
         basePane.setDisable(false);
         basePane.setOpacity(1);
     }
