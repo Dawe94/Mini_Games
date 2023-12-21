@@ -84,7 +84,7 @@ public class MainController implements Initializable{
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        numbers = Numbers.generate();
+        numbers = Numbers.generate(10);
         getRelations();
         inputsAsCollection();
         setListener();
@@ -136,7 +136,7 @@ public class MainController implements Initializable{
         System.out.println(numbers.toString());
         gameOver = true;
         round = 0;
-        numbers = Numbers.generate();
+        numbers = Numbers.generate(10);
         resultImage.setVisible(false);
         userInfoLabel.setFont(new Font(14));
         getRelations();

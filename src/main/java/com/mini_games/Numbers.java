@@ -2,25 +2,28 @@
 package com.mini_games;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.Set;
 import java.util.StringJoiner;
 import javafx.scene.control.TextField;
 
 public class Numbers {
     
-    private static final Random RANDOM = new Random();
     private int numOfCorrectNumbers;
     
-    public static Numbers generate() {
-        Set<Integer> set = new LinkedHashSet<>();
-        while (set.size() < 4) {
-            set.add(RANDOM.nextInt(10));
+    public static Numbers generate(int n) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            list.add(i);
         }
-        return new Numbers(new ArrayList<>(set));
+        Collections.shuffle(list, new Random());
+        for (int i = list.size() - 1; i > 3; i--) {
+            list.remove(i);
+        }
+        System.out.println(list.toString());
+        return new Numbers(list);
     }
     
     private final List<Integer> numbers;
