@@ -1,4 +1,4 @@
-package com.number_guessing;
+package com.mini_games;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +16,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("GuessNumberView.fxml"));
         scene = new Scene(root);
-        stage.setTitle("Guess Number!");
+        stage.setTitle("Mini Games!");
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();

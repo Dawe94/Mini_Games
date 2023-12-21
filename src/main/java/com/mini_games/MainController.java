@@ -1,4 +1,4 @@
-package com.number_guessing;
+package com.mini_games;
 
 import java.net.URL;
 import java.util.ArrayList;

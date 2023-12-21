@@ -1,6 +1,6 @@
-com\number_guessing\MainController$1.class
+com\mini_games\Numbers.class
 module-info.class
-com\number_guessing\App.class
-com\number_guessing\InvalidNumbersException.class
-com\number_guessing\Numbers.class
-com\number_guessing\MainController.class
+com\mini_games\MainController.class
+com\mini_games\MainController$1.class
+com\mini_games\App.class
+com\mini_games\InvalidNumbersException.class

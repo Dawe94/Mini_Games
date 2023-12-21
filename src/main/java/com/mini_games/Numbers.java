@@ -1,5 +1,5 @@
 
-package com.number_guessing;
+package com.mini_games;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;

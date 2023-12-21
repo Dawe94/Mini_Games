@@ -1,5 +1,5 @@
 
-package com.number_guessing;
+package com.mini_games;
 
 public class InvalidNumbersException extends Exception {
 
