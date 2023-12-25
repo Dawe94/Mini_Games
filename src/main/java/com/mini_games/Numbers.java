@@ -49,7 +49,7 @@ public class Numbers {
             color(index, inputNumbers.get(index));
         }
         if (numOfCorrectNumbers >= inputNumbers.size()) return true;
-        } catch (Exception ex) {
+        } catch (NumberFormatException ex) {
             throw new InvalidNumbersException("Exception while check "+ ++index+"-th TextField!");
         }
         return false;

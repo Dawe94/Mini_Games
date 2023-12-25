@@ -1,11 +1,8 @@
 package com.mini_games;
 
+import com.mini_games.guess_numbers.GuessNumberController;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -14,21 +11,20 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 public class MainController implements Initializable{
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private final String MISSING_NUMBER = "You have to write a number in all of number fields!";
-    private Numbers numbers;
-    private final List<TextField> inputs = new ArrayList<>();
-    private int round;
-    private boolean gameOver;
+    private GuessNumberController guessNumber;
     private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("GOLD-BARS.jpg"));
     private final Image LOSE_IMAGE = new Image(getClass().getResourceAsStream("policeCar.jpg"));
+    
 //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="FXML Objects">
+    @FXML
+    private Pane mainPane;
     @FXML
     private Pane basePane;
     @FXML
@@ -56,11 +52,7 @@ public class MainController implements Initializable{
     @FXML
     public void checkNumbersAction() {
         try {
-            if (numbers.check(inputs)) {
-                getResult("Congratulation! You Win!", Color.GREEN, WIN_IMAGE);
-            } else if (++round >= 4) {
-                getResult("You Lose!", Color.RED, LOSE_IMAGE);
-            }
+            guessNumber.checkNumbersAction(basePane, userInfoPane, WIN_IMAGE, LOSE_IMAGE);
         } catch (InvalidNumbersException ex) {
             basePane.setDisable(true);
             basePane.setOpacity(0.3);
@@ -71,25 +63,23 @@ public class MainController implements Initializable{
     }
     
     @FXML
+    public void handleGuessNumberButton() {
+        mainPane.setVisible(false);
+        basePane.setVisible(true);
+        guessNumber = new GuessNumberController(basePane);
+    }
+    
+    @FXML
     public void handleInfoOkButton() {
-        userInfoPane.setVisible(false);
-        userInfoLabel.setText("");
-        userInfoLabel.setTextFill(Color.BLACK);
-        basePane.setDisable(false);
-        basePane.setOpacity(1);
-        if (gameOver) {
-            restore();
-        }
+        guessNumber.handleOkButton(basePane, userInfoPane);
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        numbers = Numbers.generate(10);
-        getRelations();
-        inputsAsCollection();
-        setListener();
+       
     }
     
+    /*
     private void getRelations() {
         relationLabel1.setText(relation(numbers.get(0), numbers.get(1)));
         relationLabel2.setText(relation(numbers.get(1), numbers.get(2)));
@@ -100,13 +90,7 @@ public class MainController implements Initializable{
         return first < second ? "<" : ">";
     }
 
-    private void inputsAsCollection() {
-        inputs.add(input1);
-        inputs.add(input2);
-        inputs.add(input3);
-        inputs.add(input4);
-    }
-
+    
     private void setListener() {
         for (TextField tf : inputs) {
             tf.textProperty().addListener(new ChangeListener<String>() {
@@ -118,7 +102,7 @@ public class MainController implements Initializable{
                 }
             });
         }
-    }
+    }   
 
     private void getResult(String result, Color color, Image image) {
         basePane.setDisable(true);
@@ -145,5 +129,5 @@ public class MainController implements Initializable{
             tf.setStyle("-fx-text-fill:black; -fx-background-color: #dcdcdc;");
             tf.setDisable(false);
         }
-    }
+    }   */
 }

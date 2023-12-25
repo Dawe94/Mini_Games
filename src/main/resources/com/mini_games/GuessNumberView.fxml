@@ -12,15 +12,20 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="335.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mini_games.MainController">
+<AnchorPane id="mainPane" fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="335.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mini_games.MainController">
    <children>
-      <Pane id="basePane" fx:id="basePane" layoutX="19.0" layoutY="16.0" prefHeight="335.0" prefWidth="320.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Pane id="mainPane" fx:id="mainPane" layoutX="2.0" prefHeight="335.0" prefWidth="320.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button onAction="#handleGuessNumberButton" layoutX="107.0" layoutY="52.0" mnemonicParsing="false" text="GuessNumber" />
+         </children>
+      </Pane>
+      <Pane id="basePane" fx:id="basePane" layoutX="19.0" layoutY="16.0" prefHeight="335.0" prefWidth="320.0" visible="false" AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ImageView fitHeight="335.0" fitWidth="320.0" opacity="0.74" pickOnBounds="true" smooth="false">
                <image>
                   <Image url="@editedVault2.jpg" />
                </image></ImageView>
-            <HBox layoutX="19.0" layoutY="51.0">
+                <HBox id="hbox" fx:id="hbox" layoutX="19.0" layoutY="51.0">
                <children>
                   <TextField id="input1" fx:id="input1" prefHeight="48.0" prefWidth="45.0" style="-fx-background-color: #dcdcdc;">
                      <font>
@@ -58,7 +63,7 @@
                      </font>
                   </TextField>
                </children>
-            </HBox>
+                </HBox>
             <Label alignment="CENTER" layoutX="43.0" prefHeight="39.0" prefWidth="237.0" text="Guess Number" textAlignment="CENTER">
                <font>
                   <Font size="20.0" />
