@@ -1,14 +1,11 @@
 
 package com.mini_games.guess_numbers;
 
-import com.mini_games.InvalidNumbersException;
-import com.mini_games.Numbers;
 import com.mini_games.SubController;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -22,76 +19,82 @@ public final class GuessNumberController implements SubController {
     
     private static GuessNumberController controller;
     
-    private boolean gameOver;
-    private int round;
-    
-    public static GuessNumberController getInstance(Pane pane) {
-        System.out.println("HHHHHEEEEEERRRRREEEE111!");
+    public static GuessNumberController getInstance(Pane gamePane, Pane infoPane) {
         if (controller == null) {
-            controller = new GuessNumberController(pane);
-            System.out.println("HHHHHEEEEEERRRRREEEE222!");
+            controller = new GuessNumberController(gamePane, infoPane);
         }
         return controller;
     }
     
-    public GuessNumberController(Pane pane) {
-        System.out.println("HHHHHEEEEEERRRRREEEE333!");
-        unfold(pane);
-        System.out.println("HHHHHEEEEEERRRRREEEE444!");
-        setListener();
-        System.out.println("HHHHHEEEEEERRRRREEEE555!");
+    private GuessNumberController(Pane gamePane, Pane infoPane) {
+        guessNumberPane = gamePane;
+        userInfoPane = infoPane;
         numbers = Numbers.generate(10);
-        System.out.println("HHHHHEEEEEERRRRREEEE666!");
+        unfold();
+        setListener();
         getRelations();
-        System.out.println("HHHHHEEEEEERRRRREEEE777!");
     }
     
-    private List<TextField> inputs = new ArrayList<>();
-    private List<Label> relations = new ArrayList<>();
+    private final List<TextField> inputs = new ArrayList<>();
+    private final List<Label> relations = new ArrayList<>();
+    private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/GOLD-BARS.jpg"));
+    private final Image LOSE_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/policeCar.jpg"));
+    private final String MISSING_NUMBER = "You have to write a number in all of number fields!";
+    private final Pane guessNumberPane;
+    private final Pane userInfoPane;
+    private ImageView resultImage;
+    private Label userInfoLabel;
     private Numbers numbers;
+    private boolean gameOver;
+    private int round;
     
     @Override
-    public void unfold(Pane pane) {
-        HBox hbox = (HBox)pane.lookup("#hbox");
-        System.out.println(hbox);
+    public void unfold() {
+        HBox hbox = (HBox)guessNumberPane.lookup("#hbox");
         for (int i = 1; i <= 4; i++) {
             inputs.add((TextField)hbox.lookup("#input"+i));
             if (i < 4) {
                 relations.add((Label)hbox.lookup("#relationLabel"+i));
             }
         }
-        System.out.println(inputs.toString());
+        userInfoLabel = (Label)userInfoPane.lookup("#userInfoLabel");
+        resultImage = (ImageView)userInfoPane.lookup("#resultImage");
     }
     
-    public void checkNumbersAction(Pane basePane, Pane userinfoPane, Image WIN_IMAGE, Image LOSE_IMAGE) throws  InvalidNumbersException {
-        if (numbers.check(inputs)) {
-            getResult("Congratulation! You Win!", Color.GREEN, WIN_IMAGE, basePane, userinfoPane);
-        } else if (++round >= 4) {
-            getResult("You Lose!", Color.RED, LOSE_IMAGE, basePane, userinfoPane);
+    public void checkNumbersAction() {
+        try {
+            if (numbers.check(inputs)) {
+                getResult("Congratulation! You Win!", Color.GREEN, WIN_IMAGE);
+            } else if (++round >= 4) {
+                getResult("You Lose!", Color.RED, LOSE_IMAGE);
+            }
+        } catch (InvalidNumbersException ex) {
+            guessNumberPane.setDisable(true);
+            guessNumberPane.setOpacity(0.3);
+            userInfoPane.setVisible(true);
+            userInfoLabel.setText(MISSING_NUMBER);
+            userInfoLabel.setTextFill(Color.RED);
         }
     }
     
-    public void handleOkButton(Pane basePane, Pane userInfoPane) {
+    public void handleOkButton() {
         userInfoPane.setVisible(false);
-        Label userInfoLabel = (Label)userInfoPane.lookup("#userInfoLabel");
         userInfoLabel.setText("");
         userInfoLabel.setTextFill(Color.BLACK);
-        basePane.setDisable(false);
-        basePane.setOpacity(1);
+        guessNumberPane.setDisable(false);
+        guessNumberPane.setOpacity(1);
         if (gameOver) {
-            restore(basePane, userInfoPane);
+            restore();
         }
     }
     
     @Override
-    public void restore(Pane mainPane, Pane userInfoPane) {
-        System.out.println(numbers.toString());
+    public void restore() {
         gameOver = true;
         round = 0;
         numbers = Numbers.generate(10);
-        ImageView resultView = (ImageView)userInfoPane.lookup("#resultImage");
-        resultView.setVisible(false);
-        Label userInfoLabel = (Label)userInfoPane.lookup("#userInfoLabel");
+        getRelations();
+        resultImage.setVisible(false);
         userInfoLabel.setFont(new Font(14));
         for (TextField tf : inputs) {
             tf.clear();
@@ -113,16 +116,14 @@ public final class GuessNumberController implements SubController {
         }
     }
     
-    private void getResult(String result, Color color, Image image, Pane basePane, Pane userInfoPane) {
-        basePane.setDisable(true);
-        basePane.setOpacity(0.3);
+    private void getResult(String result, Color color, Image image) {
+        guessNumberPane.setDisable(true);
+        guessNumberPane.setOpacity(0.3);
         userInfoPane.setVisible(true);
-        Label userInfoLabel = (Label)userInfoPane.lookup("#userInfoLabel");
         userInfoLabel.setFont(new Font(24));
         userInfoLabel.setText(result);
         userInfoLabel.setTextFill(color);
         gameOver = true;
-        ImageView resultImage = (ImageView)userInfoPane.lookup("#resultImage");
         resultImage.setVisible(true);
         resultImage.setImage(image);      
     }

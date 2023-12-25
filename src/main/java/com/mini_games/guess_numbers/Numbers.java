@@ -1,5 +1,5 @@
 
-package com.mini_games;
+package com.mini_games.guess_numbers;
 
 import java.util.ArrayList;
 import java.util.Collections;
