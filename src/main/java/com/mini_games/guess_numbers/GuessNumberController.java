@@ -1,4 +1,3 @@
-
 package com.mini_games.guess_numbers;
 
 import com.mini_games.SubController;
@@ -6,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -16,16 +16,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public final class GuessNumberController implements SubController {
-    
+
     private static GuessNumberController controller;
-    
+
     public static GuessNumberController getInstance(Pane gamePane, Pane infoPane) {
         if (controller == null) {
             controller = new GuessNumberController(gamePane, infoPane);
         }
         return controller;
     }
-    
+
     private GuessNumberController(Pane gamePane, Pane infoPane) {
         guessNumberPane = gamePane;
         userInfoPane = infoPane;
@@ -34,7 +34,7 @@ public final class GuessNumberController implements SubController {
         setListener();
         getRelations();
     }
-    
+
     private final List<TextField> inputs = new ArrayList<>();
     private final List<Label> relations = new ArrayList<>();
     private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/GOLD-BARS.jpg"));
@@ -47,20 +47,22 @@ public final class GuessNumberController implements SubController {
     private Numbers numbers;
     private boolean gameOver;
     private int round;
-    
+
     @Override
     public void unfold() {
-        HBox hbox = (HBox)guessNumberPane.lookup("#hbox");
+        //Unfold guessNumber Pane (Game Pane)
+        HBox hbox = (HBox)checkedLookup(guessNumberPane, "#hbox");
         for (int i = 1; i <= 4; i++) {
-            inputs.add((TextField)hbox.lookup("#input"+i));
+            inputs.add((TextField)checkedLookup(hbox, "#input" + i));
             if (i < 4) {
-                relations.add((Label)hbox.lookup("#relationLabel"+i));
+                relations.add((Label)checkedLookup(hbox, "#relationLabel" + i));
             }
         }
-        userInfoLabel = (Label)userInfoPane.lookup("#userInfoLabel");
-        resultImage = (ImageView)userInfoPane.lookup("#resultImage");
+        // Unfold userInfoPane (Alert Pane)
+        userInfoLabel = (Label)checkedLookup(userInfoPane, "#userInfoLabel");
+        resultImage = (ImageView)checkedLookup(userInfoPane, "#resultImage");
     }
-    
+
     public void checkNumbersAction() {
         try {
             if (numbers.check(inputs)) {
@@ -76,7 +78,7 @@ public final class GuessNumberController implements SubController {
             userInfoLabel.setTextFill(Color.RED);
         }
     }
-    
+
     public void handleOkButton() {
         userInfoPane.setVisible(false);
         userInfoLabel.setText("");
@@ -87,7 +89,7 @@ public final class GuessNumberController implements SubController {
             restore();
         }
     }
-    
+
     @Override
     public void restore() {
         gameOver = true;
@@ -102,7 +104,7 @@ public final class GuessNumberController implements SubController {
             tf.setDisable(false);
         }
     }
-    
+
     private void setListener() {
         for (TextField tf : inputs) {
             tf.textProperty().addListener(new ChangeListener<String>() {
@@ -115,7 +117,7 @@ public final class GuessNumberController implements SubController {
             });
         }
     }
-    
+
     private void getResult(String result, Color color, Image image) {
         guessNumberPane.setDisable(true);
         guessNumberPane.setOpacity(0.3);
@@ -125,17 +127,17 @@ public final class GuessNumberController implements SubController {
         userInfoLabel.setTextFill(color);
         gameOver = true;
         resultImage.setVisible(true);
-        resultImage.setImage(image);      
+        resultImage.setImage(image);
     }
-    
+
     private void getRelations() {
         for (int i = 0; i < relations.size(); i++) {
-            relations.get(i).setText(relation(numbers.get(i), numbers.get(i+1)));
+            relations.get(i).setText(relation(numbers.get(i), numbers.get(i + 1)));
         }
     }
-    
+
     private String relation(int first, int second) {
         return first < second ? "<" : ">";
     }
-    
+
 }

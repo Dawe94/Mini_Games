@@ -1,16 +1,13 @@
 package com.mini_games;
 
-import com.mini_games.guess_numbers.InvalidNumbersException;
 import com.mini_games.guess_numbers.GuessNumberController;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
-public class MainController implements Initializable{
+public class MainController implements Initializable {
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private GuessNumberController guessNumber;
@@ -23,14 +20,11 @@ public class MainController implements Initializable{
     private Pane guessNumberPane;
     @FXML
     private Pane userInfoPane;
-    @FXML
-    private Label userInfoLabel;
     //</editor-fold>
 
     @FXML
     public void checkNumbersAction() {
-            guessNumber.checkNumbersAction();
-        
+            guessNumber.checkNumbersAction();    
     }
     
     @FXML
@@ -46,7 +40,6 @@ public class MainController implements Initializable{
     }
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-       
+    public void initialize(URL url, ResourceBundle rb) {       
     }
 }
