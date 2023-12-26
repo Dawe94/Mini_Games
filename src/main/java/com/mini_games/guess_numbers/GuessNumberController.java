@@ -27,7 +27,7 @@ public final class GuessNumberController implements SubController {
     }
 
     private GuessNumberController(Pane gamePane, Pane infoPane) {
-        guessNumberPane = gamePane;
+        this.gamePane = gamePane;
         userInfoPane = infoPane;
         numbers = Numbers.generate(10);
         unfold();
@@ -40,7 +40,7 @@ public final class GuessNumberController implements SubController {
     private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/GOLD-BARS.jpg"));
     private final Image LOSE_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/policeCar.jpg"));
     private final String MISSING_NUMBER = "You have to write a number in all of number fields!";
-    private final Pane guessNumberPane;
+    private final Pane gamePane;
     private final Pane userInfoPane;
     private ImageView resultImage;
     private Label userInfoLabel;
@@ -51,7 +51,7 @@ public final class GuessNumberController implements SubController {
     @Override
     public void unfold() {
         //Unfold guessNumber Pane (Game Pane)
-        HBox hbox = (HBox)checkedLookup(guessNumberPane, "#hbox");
+        HBox hbox = (HBox)checkedLookup(gamePane, "#hbox");
         for (int i = 1; i <= 4; i++) {
             inputs.add((TextField)checkedLookup(hbox, "#input" + i));
             if (i < 4) {
@@ -71,8 +71,8 @@ public final class GuessNumberController implements SubController {
                 getResult("You Lose!", Color.RED, LOSE_IMAGE);
             }
         } catch (InvalidNumbersException ex) {
-            guessNumberPane.setDisable(true);
-            guessNumberPane.setOpacity(0.3);
+            gamePane.setDisable(true);
+            gamePane.setOpacity(0.3);
             userInfoPane.setVisible(true);
             userInfoLabel.setText(MISSING_NUMBER);
             userInfoLabel.setTextFill(Color.RED);
@@ -83,8 +83,8 @@ public final class GuessNumberController implements SubController {
         userInfoPane.setVisible(false);
         userInfoLabel.setText("");
         userInfoLabel.setTextFill(Color.BLACK);
-        guessNumberPane.setDisable(false);
-        guessNumberPane.setOpacity(1);
+        gamePane.setDisable(false);
+        gamePane.setOpacity(1);
         if (gameOver) {
             restore();
         }
@@ -119,8 +119,8 @@ public final class GuessNumberController implements SubController {
     }
 
     private void getResult(String result, Color color, Image image) {
-        guessNumberPane.setDisable(true);
-        guessNumberPane.setOpacity(0.3);
+        gamePane.setDisable(true);
+        gamePane.setOpacity(0.3);
         userInfoPane.setVisible(true);
         userInfoLabel.setFont(new Font(24));
         userInfoLabel.setText(result);

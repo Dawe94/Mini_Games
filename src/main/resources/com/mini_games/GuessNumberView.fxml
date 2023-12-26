@@ -17,6 +17,7 @@
       <Pane id="mainPane" fx:id="mainPane" layoutX="2.0" layoutY="-110.0" prefHeight="335.0" prefWidth="320.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Button layoutX="175.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleGuessNumberButton" text="GuessNumber" />
+            <Button layoutX="175.0" layoutY="101.0" mnemonicParsing="false" onAction="#handlePuzzleButton" prefHeight="30.0" prefWidth="106.0" text="Puzzle" />
          </children>
       </Pane>
       <Pane id="guessNumberPane" fx:id="guessNumberPane" layoutX="19.0" layoutY="16.0" prefHeight="335.0" prefWidth="320.0" visible="false" AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -72,6 +73,11 @@
                <font>
                   <Font size="18.0" />
                </font></Button>
+         </children>
+      </Pane>
+      <Pane id="puzzlePane" fx:id="puzzlePane" prefHeight="459.0" prefWidth="455.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView id="puzzleImageView" fx:id="puzzleImageView" fitHeight="369.0" fitWidth="386.0" layoutX="39.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
       <Pane id="userInfoPane" fx:id="userInfoPane" layoutX="74.0" layoutY="159.0" prefHeight="211.0" prefWidth="308.0" visible="false">

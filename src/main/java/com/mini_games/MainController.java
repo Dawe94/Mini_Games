@@ -1,6 +1,7 @@
 package com.mini_games;
 
 import com.mini_games.guess_numbers.GuessNumberController;
+import com.mini_games.puzzle.PuzzleController;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ public class MainController implements Initializable {
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private GuessNumberController guessNumber;
+    private PuzzleController puzzle;
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="FXML Objects">
@@ -18,6 +20,8 @@ public class MainController implements Initializable {
     private Pane mainPane;
     @FXML
     private Pane guessNumberPane;
+    @FXML
+    private Pane puzzlePane;
     @FXML
     private Pane userInfoPane;
     //</editor-fold>
@@ -37,6 +41,13 @@ public class MainController implements Initializable {
     @FXML
     public void handleInfoOkButton() {
         guessNumber.handleOkButton();
+    }
+    
+    @FXML
+    public void handlePuzzleButton() {
+        mainPane.setVisible(false);
+        puzzlePane.setVisible(true);
+        puzzle = PuzzleController.getInstance(puzzlePane, userInfoPane);
     }
     
     @Override
