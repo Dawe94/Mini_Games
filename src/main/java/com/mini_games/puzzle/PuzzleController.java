@@ -20,17 +20,19 @@ public class PuzzleController implements SubController {
         this.gamePane = gamePane;
         userInfoPane = infoPane;
         unfold();
-        puzzleImageView.setImage(WIN_IMAGE);
+        
     }
     
+    private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/GOLD-BARS.jpg"));
+    private final int numOfRows = 4;
     private Pane gamePane;
     private Pane userInfoPane;
-    private ImageView puzzleImageView;
-    private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/GOLD-BARS.jpg"));
+    private Pane imagePane;
 
     @Override
     public void unfold() {
-       puzzleImageView = (ImageView)checkedLookup(gamePane, "#puzzleImageView");
+       imagePane = (Pane)checkedLookup(gamePane, "#imagePane");
+       setImageViews();
     }
 
     @Override
@@ -38,6 +40,40 @@ public class PuzzleController implements SubController {
         
     }
     
+    private ImageView[][] setImageViews() {
+        double heightOfAPart = imagePane.getHeight() / numOfRows;
+        double widthOfAPart = imagePane.getWidth() / numOfRows;
+        int numOfParts = numOfRows * numOfRows;
+        ImageView[][] imageArray = new ImageView[numOfRows][numOfRows];
+        double currentHeight = 0;
+        for (int i = 0; i < numOfRows; i++) {
+            double currentWidth = 0;
+            for (int j = 0; j < numOfRows; j++) {
+                imageArray[i][j] = new ImageView();
+                imageArray[i][j].setFitHeight(heightOfAPart);
+                imageArray[i][j].setFitWidth(widthOfAPart);
+                imageArray[i][j].setLayoutY(currentHeight);
+                imageArray[i][j].setLayoutX(currentWidth);
+                imageArray[i][j].setStyle("-fx-border-color: red;");
+                imageArray[i][j].setVisible(true);
+                imageArray[i][j].setImage(WIN_IMAGE);
+                
+                imagePane.getChildren().add(imageArray[i][j]);
+                
+                currentWidth += widthOfAPart;
+            }
+            currentHeight += heightOfAPart;
+        }
+        return imageArray;
+    }
     
+    private void imageCuter() {
+        double squareSize = Math.min(WIN_IMAGE.getWidth(), WIN_IMAGE.getHeight());
+       // puzzleImageView.setViewport(new javafx.geometry.Rectangle2D(25, 50, 25, 50));
+    }
+    
+    private double calculator() {
+        return imagePane.getHeight() / 16;
+    }
     
 }
