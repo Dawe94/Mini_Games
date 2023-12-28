@@ -40,31 +40,25 @@ public class PuzzleController implements SubController {
         
     }
     
-    private ImageView[][] setImageViews() {
+    private void setImageViews() {
         double heightOfAPart = imagePane.getHeight() / numOfRows;
         double widthOfAPart = imagePane.getWidth() / numOfRows;
         int numOfParts = numOfRows * numOfRows;
-        ImageView[][] imageArray = new ImageView[numOfRows][numOfRows];
+        PuzzlePart[][] partArray = new PuzzlePart[numOfRows][numOfRows];
         double currentHeight = 0;
         for (int i = 0; i < numOfRows; i++) {
             double currentWidth = 0;
             for (int j = 0; j < numOfRows; j++) {
-                imageArray[i][j] = new ImageView();
-                imageArray[i][j].setFitHeight(heightOfAPart);
-                imageArray[i][j].setFitWidth(widthOfAPart);
-                imageArray[i][j].setLayoutY(currentHeight);
-                imageArray[i][j].setLayoutX(currentWidth);
-                imageArray[i][j].setStyle("-fx-border-color: red;");
-                imageArray[i][j].setVisible(true);
-                imageArray[i][j].setImage(WIN_IMAGE);
+                partArray[i][j] = new PuzzlePart(WIN_IMAGE, new Coordinates(currentHeight, currentWidth));
+                partArray[i][j].setSize(heightOfAPart, widthOfAPart);
+                partArray[i][j].getImagePart().setStyle("-fx-border-color: red;");
                 
-                imagePane.getChildren().add(imageArray[i][j]);
+                imagePane.getChildren().add(partArray[i][j].getImagePart());
                 
                 currentWidth += widthOfAPart;
             }
             currentHeight += heightOfAPart;
         }
-        return imageArray;
     }
     
     private void imageCuter() {
