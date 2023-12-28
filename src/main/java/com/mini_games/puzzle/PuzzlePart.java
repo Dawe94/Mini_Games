@@ -14,6 +14,10 @@ public class PuzzlePart {
         restorePosition();
     }
     
+    public void setViewPort(double layoutY, double layoutX, double height, double width) {
+        part.setViewport(new javafx.geometry.Rectangle2D(layoutX, layoutY, width, height));
+    }
+    
     public void setSize(double height, double width) {
         part.setFitHeight(height);
         part.setFitWidth(width);

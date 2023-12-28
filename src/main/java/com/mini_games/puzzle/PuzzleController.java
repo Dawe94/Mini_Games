@@ -23,7 +23,8 @@ public class PuzzleController implements SubController {
         
     }
     
-    private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/GOLD-BARS.jpg"));
+    private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/GOLD-BARS.jpg"),
+            350, 400, true, true);
     private final int numOfRows = 4;
     private Pane gamePane;
     private Pane userInfoPane;
@@ -49,16 +50,18 @@ public class PuzzleController implements SubController {
         for (int i = 0; i < numOfRows; i++) {
             double currentWidth = 0;
             for (int j = 0; j < numOfRows; j++) {
-                partArray[i][j] = new PuzzlePart(WIN_IMAGE, new Coordinates(currentHeight, currentWidth));
+                Coordinates position = new Coordinates(currentHeight, currentWidth);
+                partArray[i][j] = new PuzzlePart(WIN_IMAGE, position);
                 partArray[i][j].setSize(heightOfAPart, widthOfAPart);
                 partArray[i][j].getImagePart().setStyle("-fx-border-color: red;");
-                
+                partArray[i][j].setViewPort(currentHeight, currentWidth, heightOfAPart,  widthOfAPart);
                 imagePane.getChildren().add(partArray[i][j].getImagePart());
                 
                 currentWidth += widthOfAPart;
             }
             currentHeight += heightOfAPart;
         }
+        partArray[0][0].changePosition(partArray[1][2]);
     }
     
     private void imageCuter() {
