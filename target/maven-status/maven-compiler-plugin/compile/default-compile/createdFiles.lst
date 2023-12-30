@@ -1,11 +1,11 @@
-com\mini_games\puzzle\PuzzleController.class
 com\mini_games\SubController.class
 com\mini_games\guess_numbers\Numbers.class
-com\mini_games\guess_numbers\InvalidNumbersException.class
 module-info.class
-com\mini_games\MainController.class
-com\mini_games\guess_numbers\GuessNumberController$1.class
 com\mini_games\guess_numbers\GuessNumberController.class
 com\mini_games\puzzle\Coordinates.class
 com\mini_games\App.class
 com\mini_games\puzzle\PuzzlePart.class
+com\mini_games\puzzle\PuzzleController.class
+com\mini_games\guess_numbers\InvalidNumbersException.class
+com\mini_games\MainController.class
+com\mini_games\guess_numbers\GuessNumberController$1.class

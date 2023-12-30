@@ -23,6 +23,11 @@ public class PuzzlePart {
         part.setFitWidth(width);
     }
     
+    public void decrementSize() {
+        setSize(part.getFitHeight() * 0.97, part.getFitWidth() * 0.97);
+        
+    }
+    
     public void setPosition(Coordinates coordinates) {
         part.setLayoutY(coordinates.getRow());
         part.setLayoutX(coordinates.getColumn());

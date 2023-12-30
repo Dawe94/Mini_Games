@@ -23,8 +23,8 @@ public class PuzzleController implements SubController {
         
     }
     
-    private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/GOLD-BARS.jpg"),
-            350, 400, true, true);
+    private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/PuzzleImages/GreenEarth.jpg"),
+            350, 350, true, true);
     private final int numOfRows = 4;
     private Pane gamePane;
     private Pane userInfoPane;
@@ -55,13 +55,14 @@ public class PuzzleController implements SubController {
                 partArray[i][j].setSize(heightOfAPart, widthOfAPart);
                 partArray[i][j].getImagePart().setStyle("-fx-border-color: red;");
                 partArray[i][j].setViewPort(currentHeight, currentWidth, heightOfAPart,  widthOfAPart);
+                partArray[i][j].decrementSize();
                 imagePane.getChildren().add(partArray[i][j].getImagePart());
                 
                 currentWidth += widthOfAPart;
             }
             currentHeight += heightOfAPart;
         }
-        partArray[0][0].changePosition(partArray[1][2]);
+        //partArray[0][0].changePosition(partArray[numOfRows-1][numOfRows-1]);
     }
     
     private void imageCuter() {
