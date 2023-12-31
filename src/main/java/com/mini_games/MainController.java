@@ -35,7 +35,7 @@ public class MainController implements Initializable {
     public void handleGuessNumberButton() {
         //mainPane.setVisible(false);
         if (guessNumber == null) {
-            guessNumber = GuessNumberController.getInstance(guessNumberPane, userInfoPane, mainPane);
+            guessNumber = GuessNumberController.getInstance(guessNumberPane, mainPane);
         } else {
             guessNumber.restore();
         }

@@ -5,12 +5,12 @@ import com.mini_games.dynamictools.DynamicBackButton;
 import com.mini_games.dynamictools.DynamicInfoPane;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -20,27 +20,22 @@ public final class GuessNumberController implements SubController {
 
     private static GuessNumberController controller;
 
-    public static GuessNumberController getInstance(Pane gamePane, Pane infoPane, Pane mainPane) {
+    public static GuessNumberController getInstance(Pane gamePane, Pane mainPane) {
         if (controller == null) {
-            controller = new GuessNumberController(gamePane, infoPane, mainPane);
+            controller = new GuessNumberController(gamePane, mainPane);
         }
         return controller;
     }
 
-    private GuessNumberController(Pane gamePane, Pane infoPane, Pane mainPane) {
+    private GuessNumberController(Pane gamePane, Pane mainPane) {
         this.gamePane = gamePane;
-        userInfoPane = infoPane;
         numbers = Numbers.generate(10);
         unfold();
         setListener();
         getRelations();
         DynamicBackButton button = new DynamicBackButton(gamePane, mainPane);
         button.setStyle("-fx-background-color: silver;");
-        DynamicInfoPane dif = new DynamicInfoPane(gamePane);
-        dif.setLabelText("Test Text: This is a coloured Label with 24 letter size!");
-        dif.setLabelColor(Color.BROWN);
-        dif.setLabelLeterSize(24);
-        dif.setImage(WIN_IMAGE);
+        dip = new DynamicInfoPane(gamePane, event -> onAction());
     }
 
     private final List<TextField> inputs = new ArrayList<>();
@@ -49,9 +44,7 @@ public final class GuessNumberController implements SubController {
     private final Image LOSE_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/policeCar.jpg"));
     private final String MISSING_NUMBER = "You have to write a number in all of number fields!";
     private final Pane gamePane;
-    private final Pane userInfoPane;
-    private ImageView resultImage;
-    private Label userInfoLabel;
+    private final DynamicInfoPane dip;
     private Numbers numbers;
     private boolean gameOver;
     private int round;
@@ -66,9 +59,6 @@ public final class GuessNumberController implements SubController {
                 relations.add((Label)checkedLookup(hbox, "#relationLabel" + i));
             }
         }
-        // Unfold userInfoPane (Alert Pane)
-        userInfoLabel = (Label)checkedLookup(userInfoPane, "#userInfoLabel");
-        resultImage = (ImageView)checkedLookup(userInfoPane, "#resultImage");
     }
 
     public void checkNumbersAction() {
@@ -81,21 +71,14 @@ public final class GuessNumberController implements SubController {
         } catch (InvalidNumbersException ex) {
             gamePane.setDisable(true);
             gamePane.setOpacity(0.3);
-            userInfoPane.setVisible(true);
-            userInfoLabel.setText(MISSING_NUMBER);
-            userInfoLabel.setTextFill(Color.RED);
+            dip.show();
+            dip.setLabelText(MISSING_NUMBER);
+            dip.setLabelColor(Color.RED);
         }
     }
 
     public void handleOkButton() {
-        userInfoPane.setVisible(false);
-        userInfoLabel.setText("");
-        userInfoLabel.setTextFill(Color.BLACK);
-        gamePane.setDisable(false);
-        gamePane.setOpacity(1);
-        if (gameOver) {
-            restore();
-        }
+        
     }
 
     @Override
@@ -104,8 +87,6 @@ public final class GuessNumberController implements SubController {
         round = 0;
         numbers = Numbers.generate(10);
         getRelations();
-        resultImage.setVisible(false);
-        userInfoLabel.setFont(new Font(14));
         for (TextField tf : inputs) {
             tf.clear();
             tf.setStyle("-fx-text-fill:black; -fx-background-color: #dcdcdc;");
@@ -129,13 +110,12 @@ public final class GuessNumberController implements SubController {
     private void getResult(String result, Color color, Image image) {
         gamePane.setDisable(true);
         gamePane.setOpacity(0.3);
-        userInfoPane.setVisible(true);
-        userInfoLabel.setFont(new Font(24));
-        userInfoLabel.setText(result);
-        userInfoLabel.setTextFill(color);
+        dip.show();
+        dip.setLabelLeterSize(24);
+        dip.setLabelText(result);
+        dip.setLabelColor(color);
         gameOver = true;
-        resultImage.setVisible(true);
-        resultImage.setImage(image);
+        dip.setImage(image);
     }
 
     private void getRelations() {
@@ -146,6 +126,15 @@ public final class GuessNumberController implements SubController {
 
     private String relation(int first, int second) {
         return first < second ? "<" : ">";
+    }
+
+    private Consumer onAction() {
+        gamePane.setDisable(false);
+        gamePane.setOpacity(1);
+        if (gameOver) {
+            restore();
+        }
+        return null;
     }
 
 }

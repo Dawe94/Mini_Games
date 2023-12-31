@@ -1,5 +1,6 @@
 package com.mini_games.dynamictools;
 
+import java.util.function.Consumer;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
@@ -16,19 +17,27 @@ public class DynamicInfoPane {
     
     private final double HEIGHT = 211;
     private final double WIDTH = 308;
+    private final Consumer consumer;
     private Pane infoPane;
     private Rectangle rectangle;
     private ImageView imageView;
     private Label label;
     private Button button;
     
-    public DynamicInfoPane(Pane gamePane) {
+    public DynamicInfoPane(Pane gamePane, Consumer consumer) {
         setInfoPane(gamePane);
         setRectangle();
         setLabel();
         setButton();
         setImageView();
+        this.consumer = consumer;
         infoPane.getChildren().addAll(rectangle, imageView, label, button);
+        infoPane.setVisible(false);
+    }
+    
+    public void show() {
+        infoPane.setVisible(true);
+        infoPane.setOpacity(1);
     }
     
     public void setImage(Image image) {
@@ -51,7 +60,7 @@ public class DynamicInfoPane {
     private void restoreDefault() {
         label.setText("");
         label.setTextFill(Color.BLACK);
-        label.setFont(new Font(12));
+        label.setFont(new Font(14));
         imageView.setVisible(false);
 
     }
@@ -102,6 +111,7 @@ public class DynamicInfoPane {
     private void handleDIPButton() {
         infoPane.setVisible(false);
         restoreDefault();
+        consumer.accept(this);
     }
     
     
