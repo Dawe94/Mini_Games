@@ -1,11 +1,12 @@
 package com.mini_games.guess_numbers;
 
 import com.mini_games.SubController;
+import com.mini_games.dynamictools.DynamicBackButton;
+import com.mini_games.dynamictools.DynamicInfoPane;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -19,20 +20,27 @@ public final class GuessNumberController implements SubController {
 
     private static GuessNumberController controller;
 
-    public static GuessNumberController getInstance(Pane gamePane, Pane infoPane) {
+    public static GuessNumberController getInstance(Pane gamePane, Pane infoPane, Pane mainPane) {
         if (controller == null) {
-            controller = new GuessNumberController(gamePane, infoPane);
+            controller = new GuessNumberController(gamePane, infoPane, mainPane);
         }
         return controller;
     }
 
-    private GuessNumberController(Pane gamePane, Pane infoPane) {
+    private GuessNumberController(Pane gamePane, Pane infoPane, Pane mainPane) {
         this.gamePane = gamePane;
         userInfoPane = infoPane;
         numbers = Numbers.generate(10);
         unfold();
         setListener();
         getRelations();
+        DynamicBackButton button = new DynamicBackButton(gamePane, mainPane);
+        button.setStyle("-fx-background-color: silver;");
+        DynamicInfoPane dif = new DynamicInfoPane(gamePane);
+        dif.setLabelText("Test Text: This is a coloured Label with 24 letter size!");
+        dif.setLabelColor(Color.BROWN);
+        dif.setLabelLeterSize(24);
+        dif.setImage(WIN_IMAGE);
     }
 
     private final List<TextField> inputs = new ArrayList<>();
@@ -92,7 +100,7 @@ public final class GuessNumberController implements SubController {
 
     @Override
     public void restore() {
-        gameOver = true;
+        gameOver = false;
         round = 0;
         numbers = Numbers.generate(10);
         getRelations();

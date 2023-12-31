@@ -1,4 +1,4 @@
-package com.mini_games.puzzle;
+package com.mini_games;
 
 public class Coordinates {
     

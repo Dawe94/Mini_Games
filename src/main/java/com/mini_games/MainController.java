@@ -28,14 +28,19 @@ public class MainController implements Initializable {
 
     @FXML
     public void checkNumbersAction() {
-            guessNumber.checkNumbersAction();    
+        guessNumber.checkNumbersAction();    
     }
     
     @FXML
     public void handleGuessNumberButton() {
-        mainPane.setVisible(false);
+        //mainPane.setVisible(false);
+        if (guessNumber == null) {
+            guessNumber = GuessNumberController.getInstance(guessNumberPane, userInfoPane, mainPane);
+        } else {
+            guessNumber.restore();
+        }
         guessNumberPane.setVisible(true);
-        guessNumber = GuessNumberController.getInstance(guessNumberPane, userInfoPane);
+        mainPane.setVisible(false);
     }
     
     @FXML

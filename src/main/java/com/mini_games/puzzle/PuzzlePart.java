@@ -1,5 +1,6 @@
 package com.mini_games.puzzle;
 
+import com.mini_games.Coordinates;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 

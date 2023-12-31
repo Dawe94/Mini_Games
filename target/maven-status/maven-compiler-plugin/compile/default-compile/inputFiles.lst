@@ -2,9 +2,11 @@ C:\Users\user\Documents\NetBeansProjects\mini_games\src\main\java\com\mini_games
 C:\Users\user\Documents\NetBeansProjects\mini_games\src\main\java\module-info.java
 C:\Users\user\Documents\NetBeansProjects\mini_games\src\main\java\com\mini_games\App.java
 C:\Users\user\Documents\NetBeansProjects\mini_games\src\main\java\com\mini_games\guess_numbers\Numbers.java
-C:\Users\user\Documents\NetBeansProjects\mini_games\src\main\java\com\mini_games\puzzle\Coordinates.java
 C:\Users\user\Documents\NetBeansProjects\mini_games\src\main\java\com\mini_games\MainController.java
+C:\Users\user\Documents\NetBeansProjects\mini_games\src\main\java\com\mini_games\Coordinates.java
 C:\Users\user\Documents\NetBeansProjects\mini_games\src\main\java\com\mini_games\guess_numbers\InvalidNumbersException.java
+C:\Users\user\Documents\NetBeansProjects\mini_games\src\main\java\com\mini_games\dynamictools\DynamicInfoPane.java
+C:\Users\user\Documents\NetBeansProjects\mini_games\src\main\java\com\mini_games\dynamictools\DynamicBackButton.java
 C:\Users\user\Documents\NetBeansProjects\mini_games\src\main\java\com\mini_games\guess_numbers\GuessNumberController.java
 C:\Users\user\Documents\NetBeansProjects\mini_games\src\main\java\com\mini_games\puzzle\PuzzleController.java
 C:\Users\user\Documents\NetBeansProjects\mini_games\src\main\java\com\mini_games\puzzle\PuzzlePart.java
