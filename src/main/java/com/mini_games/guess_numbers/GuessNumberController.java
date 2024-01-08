@@ -33,9 +33,8 @@ public final class GuessNumberController implements SubController {
         unfold();
         setListener();
         getRelations();
-        DynamicBackButton button = new DynamicBackButton(gamePane, mainPane);
-        button.setStyle("-fx-background-color: silver;");
-        dip = new DynamicInfoPane(gamePane, event -> onAction());
+        DynamicBackButton.getInstance().setOnAction(mainPane, gamePane);
+        
     }
 
     private final List<TextField> inputs = new ArrayList<>();
@@ -44,7 +43,6 @@ public final class GuessNumberController implements SubController {
     private final Image LOSE_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/policeCar.jpg"));
     private final String MISSING_NUMBER = "You have to write a number in all of number fields!";
     private final Pane gamePane;
-    private final DynamicInfoPane dip;
     private Numbers numbers;
     private boolean gameOver;
     private int round;
@@ -71,9 +69,6 @@ public final class GuessNumberController implements SubController {
         } catch (InvalidNumbersException ex) {
             gamePane.setDisable(true);
             gamePane.setOpacity(0.3);
-            dip.show();
-            dip.setLabelText(MISSING_NUMBER);
-            dip.setLabelColor(Color.RED);
         }
     }
 
@@ -83,6 +78,7 @@ public final class GuessNumberController implements SubController {
 
     @Override
     public void restore() {
+        DynamicBackButton.getInstance();
         gameOver = false;
         round = 0;
         numbers = Numbers.generate(10);
@@ -110,12 +106,7 @@ public final class GuessNumberController implements SubController {
     private void getResult(String result, Color color, Image image) {
         gamePane.setDisable(true);
         gamePane.setOpacity(0.3);
-        dip.show();
-        dip.setLabelLeterSize(24);
-        dip.setLabelText(result);
-        dip.setLabelColor(color);
         gameOver = true;
-        dip.setImage(image);
     }
 
     private void getRelations() {

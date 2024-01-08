@@ -2,6 +2,7 @@ package com.mini_games.puzzle;
 
 import com.mini_games.Coordinates;
 import com.mini_games.SubController;
+import com.mini_games.dynamictools.DynamicBackButton;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
@@ -20,7 +21,7 @@ public class PuzzleController implements SubController {
         this.gamePane = gamePane;
         userInfoPane = infoPane;
         unfold();
-        
+        DynamicBackButton.getInstance().setOnAction(infoPane, gamePane);
     }
     
     private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/PuzzleImages/GreenEarth.jpg"),
