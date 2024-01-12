@@ -3,6 +3,7 @@ com\mini_games\dynamictools\DynamicInfoPane.class
 com\mini_games\guess_numbers\Numbers.class
 com\mini_games\Coordinates.class
 module-info.class
+com\mini_games\dynamictools\DynamicTools.class
 com\mini_games\dynamictools\DynamicBackButton.class
 com\mini_games\guess_numbers\GuessNumberController.class
 com\mini_games\App.class

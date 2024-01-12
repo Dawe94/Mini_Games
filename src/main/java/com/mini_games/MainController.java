@@ -1,6 +1,7 @@
 package com.mini_games;
 
 import com.mini_games.dynamictools.DynamicBackButton;
+import com.mini_games.dynamictools.DynamicTools;
 import com.mini_games.guess_numbers.GuessNumberController;
 import com.mini_games.puzzle.PuzzleController;
 import java.net.URL;
@@ -15,6 +16,7 @@ public class MainController implements Initializable {
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private GuessNumberController guessNumber;
     private PuzzleController puzzle;
+    private DynamicTools dynamicTools;
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="FXML Objects">
@@ -28,6 +30,8 @@ public class MainController implements Initializable {
     private Pane userInfoPane;
     @FXML
     private Button backButton;
+    @FXML 
+    private Pane infoPane;
     //</editor-fold>
 
     @FXML
@@ -39,7 +43,7 @@ public class MainController implements Initializable {
     public void handleGuessNumberButton() {
         //mainPane.setVisible(false);
         if (guessNumber == null) {
-            guessNumber = GuessNumberController.getInstance(guessNumberPane, mainPane);
+            guessNumber = GuessNumberController.getInstance(guessNumberPane, mainPane, dynamicTools);
         } else {
             guessNumber.restore();
         }
@@ -54,13 +58,17 @@ public class MainController implements Initializable {
     
     @FXML
     public void handlePuzzleButton() {
+        if (puzzle == null) {
+            puzzle = PuzzleController.getInstance(puzzlePane, mainPane, dynamicTools);
+        } else {
+            puzzle.restore();
+        }
         mainPane.setVisible(false);
         puzzlePane.setVisible(true);
-        puzzle = PuzzleController.getInstance(puzzlePane, userInfoPane);
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        DynamicBackButton.getInstance(backButton);
+        dynamicTools = new DynamicTools(mainPane, backButton, infoPane);
     }
 }

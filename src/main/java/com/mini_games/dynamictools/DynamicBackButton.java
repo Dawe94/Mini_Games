@@ -5,43 +5,28 @@ import javafx.scene.layout.Pane;
 
 public class DynamicBackButton {
     
-    private static DynamicBackButton button;
-    
-    public static DynamicBackButton getInstance() {
-        button.setVisible(true);
-        return button;
-    }
-    
-    public static DynamicBackButton getInstance(Button bButton) {
-        if (button == null) {
-            button = new DynamicBackButton(bButton);
-        }
-        return getInstance();
-    }
-    
     private final Button backButton;
+    private final Pane mainPane;
     
-    private DynamicBackButton(Button backButton) {
+    DynamicBackButton(Pane mainPane, Button backButton) {
+        this.mainPane = mainPane;
         this.backButton = backButton;
         this.backButton.toFront();
     }
     
-    public void setOnAction(Pane mainPane, Pane gamePane) {
-        backButton.setOnAction(e -> handleDynamicOkButton(mainPane, gamePane));
+    public void action(Pane gamePane) {
+        backButton.setOnAction(e -> handleDynamicOkButton(gamePane));
+        backButton.setVisible(true);
     }
     
     public void setStyle(String cssStyle) {
         backButton.setStyle(cssStyle);
     }
-    
-    private void setVisible(boolean a) {
-        backButton.setVisible(a);
-    }
 
-    private void handleDynamicOkButton(Pane mainPane, Pane gamePane) {
+    private void handleDynamicOkButton(Pane gamePane) {
         gamePane.setVisible(false);
         mainPane.setVisible(true);
-        setVisible(false);
+        backButton.setVisible(false);
     }
 }
     

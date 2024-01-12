@@ -3,6 +3,7 @@ package com.mini_games.puzzle;
 import com.mini_games.Coordinates;
 import com.mini_games.SubController;
 import com.mini_games.dynamictools.DynamicBackButton;
+import com.mini_games.dynamictools.DynamicTools;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
@@ -10,26 +11,28 @@ public class PuzzleController implements SubController {
     
     private static PuzzleController controller;
     
-    public static PuzzleController getInstance(Pane gamePane, Pane infoPane) {
+    public static PuzzleController getInstance(Pane gamePane, Pane infoPane, DynamicTools dynamicTools) {
         if (controller == null) {
-            controller = new PuzzleController(gamePane, infoPane);
+            controller = new PuzzleController(gamePane, infoPane, dynamicTools);
         }
         return controller;
     }
     
-    private PuzzleController(Pane gamePane, Pane infoPane) {
+    private PuzzleController(Pane gamePane, Pane mainPane, DynamicTools dynamicTools) {
         this.gamePane = gamePane;
-        userInfoPane = infoPane;
+        this.mainPane = mainPane;
+        this.dynamicTools = dynamicTools;
+        dynamicTools.getBackButton().action(gamePane);
         unfold();
-        DynamicBackButton.getInstance().setOnAction(infoPane, gamePane);
     }
     
     private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/PuzzleImages/GreenEarth.jpg"),
             350, 350, true, true);
     private final int numOfRows = 4;
-    private Pane gamePane;
-    private Pane userInfoPane;
+    private final Pane gamePane;
+    private final Pane mainPane;
     private Pane imagePane;
+    private final DynamicTools dynamicTools;
 
     @Override
     public void unfold() {
@@ -39,7 +42,7 @@ public class PuzzleController implements SubController {
 
     @Override
     public void restore() {
-        
+        dynamicTools.getBackButton().action(gamePane);
     }
     
     private void setImageViews() {
