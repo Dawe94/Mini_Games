@@ -53,7 +53,7 @@ public class MainController implements Initializable {
     
     @FXML
     public void handleInfoOkButton() {
-        guessNumber.handleOkButton();
+        
     }
     
     @FXML

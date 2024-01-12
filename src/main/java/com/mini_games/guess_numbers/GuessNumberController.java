@@ -1,19 +1,18 @@
 package com.mini_games.guess_numbers;
 
 import com.mini_games.SubController;
-import com.mini_games.dynamictools.DynamicBackButton;
+import com.mini_games.dynamictools.DynamicInfoPane;
 import com.mini_games.dynamictools.DynamicTools;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
 public final class GuessNumberController implements SubController {
 
@@ -31,6 +30,7 @@ public final class GuessNumberController implements SubController {
         this.mainPane = mainPane;
         this.dynamicTools = dynamicTools;
         dynamicTools.getBackButton().action(gamePane);
+        dynamicTools.getInfoPane().setButtonAction(d -> handleOkButton(d));
         numbers = Numbers.generate(10);
         unfold();
         setListener();
@@ -64,18 +64,25 @@ public final class GuessNumberController implements SubController {
     public void checkNumbersAction() {
         try {
             if (numbers.check(inputs)) {
-                getResult("Congratulation! You Win!", Color.GREEN, WIN_IMAGE);
+                getResult("Congratulation! You Win!", "green", WIN_IMAGE);
             } else if (++round >= 4) {
-                getResult("You Lose!", Color.RED, LOSE_IMAGE);
+                getResult("You Lose!", "red", LOSE_IMAGE);
             }
         } catch (InvalidNumbersException ex) {
             gamePane.setDisable(true);
             gamePane.setOpacity(0.3);
+            dynamicTools.getInfoPane().action(d -> {
+                d.setLabelText(MISSING_NUMBER);
+                d.setLabelStyle("-fx-text-fill: red; -fx-font-size: 16px;");
+                d.setPaneVisible(true);
+            });
         }
     }
 
-    public void handleOkButton() {
-        
+    public void handleOkButton(DynamicInfoPane dip) {
+        dip.setPaneVisible(false);
+        gamePane.setOpacity(1);
+        gamePane.setDisable(false);
     }
 
     @Override
@@ -105,10 +112,19 @@ public final class GuessNumberController implements SubController {
         }
     }
 
-    private void getResult(String result, Color color, Image image) {
+    private void getResult(String result, String color, Image image) {
         gamePane.setDisable(true);
         gamePane.setOpacity(0.3);
         gameOver = true;
+        dynamicTools.getInfoPane().action(d -> {
+            d.setPaneVisible(true);
+            d.setLabelText(result);
+            d.setLabelStyle("-fx-text-fill: "+color+"; -fx-font-size: 24px;");
+            d.setImage(image);
+            d.showImage();
+            d.setImageStyle("-fx-opacity: 0.3;");
+            d.setImageEffect(new GaussianBlur());
+        });
     }
 
     private void getRelations() {
@@ -121,13 +137,12 @@ public final class GuessNumberController implements SubController {
         return first < second ? "<" : ">";
     }
 
-    private Consumer onAction() {
+    private void onAction() {
         gamePane.setDisable(false);
         gamePane.setOpacity(1);
         if (gameOver) {
             restore();
         }
-        return null;
     }
 
 }
