@@ -1,7 +1,7 @@
 package com.mini_games.puzzle;
 
 import com.mini_games.Coordinates;
-import com.mini_games.SubController;
+import com.mini_games.interfaces.SubController;
 import com.mini_games.dynamictools.DynamicBackButton;
 import com.mini_games.dynamictools.DynamicTools;
 import javafx.scene.image.Image;

@@ -1,5 +1,6 @@
 package com.mini_games.dynamictools;
 
+import com.mini_games.interfaces.Unfoldable;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -12,7 +13,7 @@ import javafx.scene.layout.Pane;
 
 public class DynamicInfoPane {
     
-    private Pane infoPane;
+    private final Pane infoPane;
     private final ImageView imageView;
     private final Label label;
     private final Button button;
@@ -29,6 +30,7 @@ public class DynamicInfoPane {
     }
     
     public void action(Consumer<DynamicInfoPane> consumer) {
+        clean();
         consumer.accept(this);
     }
     

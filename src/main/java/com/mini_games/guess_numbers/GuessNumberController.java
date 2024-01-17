@@ -1,8 +1,8 @@
 package com.mini_games.guess_numbers;
 
-import com.mini_games.SubController;
 import com.mini_games.dynamictools.DynamicInfoPane;
 import com.mini_games.dynamictools.DynamicTools;
+import com.mini_games.interfaces.SubController;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.value.ChangeListener;
@@ -83,6 +83,9 @@ public final class GuessNumberController implements SubController {
         dip.setPaneVisible(false);
         gamePane.setOpacity(1);
         gamePane.setDisable(false);
+        if (gameOver) {
+            restore();
+        }
     }
 
     @Override
@@ -135,14 +138,6 @@ public final class GuessNumberController implements SubController {
 
     private String relation(int first, int second) {
         return first < second ? "<" : ">";
-    }
-
-    private void onAction() {
-        gamePane.setDisable(false);
-        gamePane.setOpacity(1);
-        if (gameOver) {
-            restore();
-        }
     }
 
 }

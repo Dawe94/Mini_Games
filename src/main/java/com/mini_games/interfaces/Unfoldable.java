@@ -1,13 +1,11 @@
 
-package com.mini_games;
+package com.mini_games.interfaces;
 
 import javafx.scene.Node;
 
-public interface SubController {
+public interface Unfoldable {
     
     void unfold();
-    
-    void restore();
     
     default Node checkedLookup(Node container, String fxid) {
         Node node = container.lookup(fxid);
