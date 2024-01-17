@@ -2,8 +2,9 @@ package com.mini_games.puzzle;
 
 import com.mini_games.Coordinates;
 import com.mini_games.interfaces.SubController;
-import com.mini_games.dynamictools.DynamicBackButton;
 import com.mini_games.dynamictools.DynamicTools;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
@@ -32,50 +33,46 @@ public class PuzzleController implements SubController {
     private final Pane gamePane;
     private final Pane mainPane;
     private Pane imagePane;
+    private List<PuzzlePart> listOfParts;
     private final DynamicTools dynamicTools;
 
     @Override
     public void unfold() {
        imagePane = (Pane)checkedLookup(gamePane, "#imagePane");
-       setImageViews();
+       imagePane.getChildren().clear();
+       listOfParts = setImageViews();
     }
 
     @Override
     public void restore() {
         dynamicTools.getBackButton().action(gamePane);
+        imagePane.getChildren().clear();
+        listOfParts = setImageViews();
     }
     
-    private void setImageViews() {
+    private List<PuzzlePart> setImageViews() {
         double heightOfAPart = imagePane.getHeight() / numOfRows;
         double widthOfAPart = imagePane.getWidth() / numOfRows;
         int numOfParts = numOfRows * numOfRows;
-        PuzzlePart[][] partArray = new PuzzlePart[numOfRows][numOfRows];
-        double currentHeight = 0;
-        for (int i = 0; i < numOfRows; i++) {
-            double currentWidth = 0;
-            for (int j = 0; j < numOfRows; j++) {
-                Coordinates position = new Coordinates(currentHeight, currentWidth);
-                partArray[i][j] = new PuzzlePart(WIN_IMAGE, position);
-                partArray[i][j].setSize(heightOfAPart, widthOfAPart);
-                partArray[i][j].getImagePart().setStyle("-fx-border-color: red;");
-                partArray[i][j].setViewPort(currentHeight, currentWidth, heightOfAPart,  widthOfAPart);
-                partArray[i][j].decrementSize();
-                imagePane.getChildren().add(partArray[i][j].getImagePart());
-                
-                currentWidth += widthOfAPart;
-            }
-            currentHeight += heightOfAPart;
+        double currHeight = 0;
+        double currWidth = 0;
+        List<PuzzlePart> list = new ArrayList<>();
+        for (int i = 0; i < numOfParts; i++) {
+            Coordinates position = new Coordinates(currHeight, currWidth);
+            PuzzlePart currentPart = i == numOfParts - 1 ? new PuzzlePart(position) : new PuzzlePart(WIN_IMAGE, position);
+            //PuzzlePart currentPart = new PuzzlePart(WIN_IMAGE, position);
+            currentPart.setSize(heightOfAPart, widthOfAPart);
+            currentPart.getImagePart().setStyle("-fx-border-color: red;");
+            currentPart.setViewPort(currHeight, currWidth, heightOfAPart,  widthOfAPart);
+            currentPart.decrementSize();
+            list.add(currentPart);
+            imagePane.getChildren().add(currentPart.getImagePart());           
+            currHeight = (i + 1) % numOfRows == 0 ? currHeight + heightOfAPart : currHeight;
+            currWidth = (i + 1) % numOfRows == 0 ? 0 : currWidth + widthOfAPart;
         }
-        //partArray[0][0].changePosition(partArray[numOfRows-1][numOfRows-1]);
-    }
-    
-    private void imageCuter() {
-        double squareSize = Math.min(WIN_IMAGE.getWidth(), WIN_IMAGE.getHeight());
-       // puzzleImageView.setViewport(new javafx.geometry.Rectangle2D(25, 50, 25, 50));
-    }
-    
-    private double calculator() {
-        return imagePane.getHeight() / 16;
+        Puzzle.shuffle(list);
+        Puzzle.unload(list);
+        return list;
     }
     
 }

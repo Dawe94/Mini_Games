@@ -3,39 +3,59 @@ package com.mini_games.puzzle;
 import com.mini_games.Coordinates;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 
 public class PuzzlePart {
     
-    private ImageView part;
+    private Pane pane;
+    private Rectangle clipRectangle;
+    private ImageView imageView;
     private final Coordinates originalPosition;
     
     public PuzzlePart(Image image, Coordinates position) {
-        part = new ImageView(image);
+        pane = new Pane();
+        clipRectangle = new Rectangle();
+        imageView = new ImageView(image);
+        pane.getChildren().addAll(imageView);
         this.originalPosition = position;
-        restorePosition();
+        restorePosition();     
+    }
+    
+    public PuzzlePart(Coordinates position) {
+        pane = new Pane();
+        clipRectangle = new Rectangle();
+        imageView = new ImageView();
+        pane.getChildren().addAll(imageView);
+        this.originalPosition = position;
+        restorePosition();     
     }
     
     public void setViewPort(double layoutY, double layoutX, double height, double width) {
-        part.setViewport(new javafx.geometry.Rectangle2D(layoutX, layoutY, width, height));
+        imageView.setViewport(new javafx.geometry.Rectangle2D(layoutX, layoutY, width, height));
     }
     
     public void setSize(double height, double width) {
-        part.setFitHeight(height);
-        part.setFitWidth(width);
+        pane.setPrefHeight(height);
+        pane.setPrefWidth(width);
+        imageView.setFitHeight(height);
+        imageView.setFitWidth(width);
+        clip();
     }
     
     public void decrementSize() {
-        setSize(part.getFitHeight() * 0.97, part.getFitWidth() * 0.97);
-        
+        setSize(pane.getPrefHeight() * 0.97, pane.getPrefWidth() * 0.97);   
     }
     
     public void setPosition(Coordinates coordinates) {
-        part.setLayoutY(coordinates.getRow());
-        part.setLayoutX(coordinates.getColumn());
+        pane.setLayoutY(coordinates.getRow());
+        pane.setLayoutX(coordinates.getColumn());
+        imageView.setLayoutY(coordinates.getRow());
+        imageView.setLayoutX(coordinates.getColumn());
     }
     
     public Coordinates getPositon() {
-        return new Coordinates(part.getLayoutY(), part.getLayoutX());
+        return new Coordinates(pane.getLayoutY(), pane.getLayoutX());
     }
     
     public void changePosition(PuzzlePart other) {
@@ -44,18 +64,24 @@ public class PuzzlePart {
         this.setPosition(otherPosition);
     }
     
-    public void restorePosition() {
+    public final void restorePosition() {
         this.setPosition(originalPosition);
     }
 
     public ImageView getImagePart() {
-        return part;
+        return imageView;
     }
     
     public boolean isEmpty() {
-        return part.getImage() == null;
+        return imageView.getImage() == null;
     }
     
-    
+    private void clip() {
+        clipRectangle.setWidth(pane.getPrefWidth());
+        clipRectangle.setHeight(pane.getPrefHeight());
+        clipRectangle.setArcWidth(20);
+        clipRectangle.setArcHeight(20);
+        imageView.setClip(clipRectangle);
+    }
     
 }

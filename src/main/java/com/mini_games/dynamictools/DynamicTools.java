@@ -20,7 +20,6 @@ public class DynamicTools {
 
     public DynamicInfoPane getInfoPane() {
         return infoPane;
-    }
-    
-    
+    } 
 }
+

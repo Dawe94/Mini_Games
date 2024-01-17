@@ -1,8 +1,6 @@
 package com.mini_games.dynamictools;
 
-import com.mini_games.interfaces.Unfoldable;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -65,7 +63,6 @@ public class DynamicInfoPane {
     public void setButtonAction(Consumer<DynamicInfoPane> consumer) {
         clean();
         button.setOnAction(eh -> consumer.accept(this));
-        
     }
     
     public void setButtonStyle(String cssStyle) {
@@ -79,7 +76,5 @@ public class DynamicInfoPane {
         imageView.setEffect(null);
         imageView.setVisible(false);
     }
-    
-    
     
 }
