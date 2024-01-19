@@ -31,7 +31,7 @@ public class PuzzleController implements SubController {
     
     private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/PuzzleImages/GreenEarth.jpg"),
             350, 350, true, true);
-    private final int numOfRows = 4;
+    private final int numOfRows = 3;
     private final Pane gamePane;
     private final Pane mainPane;
     private Pane imagePane;
@@ -73,21 +73,30 @@ public class PuzzleController implements SubController {
             currHeight = (i + 1) % numOfRows == 0 ? currHeight + heightOfAPart : currHeight;
             currWidth = (i + 1) % numOfRows == 0 ? 0 : currWidth + widthOfAPart;
         }      
-        Puzzle.shuffle(list);       
-        list.stream().forEach(PuzzlePart::restorePosition);
+        Puzzle.shuffle(list);
+        list.stream().forEach(p -> System.out.println(p.isEmpty()));
+        //list.stream().forEach(PuzzlePart::restorePosition);
         return list;
     }
 
     private void handleKeyEvent(KeyCode keyCode) {
-        switch (keyCode) {
-            case UP: System.out.println("Up");
-            break;
-            case DOWN: System.out.println("Down");
-            break;
-            case LEFT: System.out.println("Left");
-            break;
-            case RIGHT: System.out.println("Up");
-            break;
+        int blank = Puzzle.getBlankElement(listOfParts);
+        if (blank != -1) {
+            switch (keyCode) {
+                case UP:
+                    if (blank - numOfRows >= 0) Puzzle.swap(listOfParts, blank - numOfRows, blank);
+                    break;
+                case DOWN:
+                    if (blank + numOfRows < listOfParts.size()) Puzzle.swap(listOfParts, blank + numOfRows, blank);
+                    break;
+                case LEFT:
+                    if (blank - 1 >= 0) Puzzle.swap(listOfParts, blank - 1, blank);
+                    break;
+                case RIGHT:
+                    if (blank + 1 < listOfParts.size()) Puzzle.swap(listOfParts, blank + 1, blank);
+                    break;
+                default:
+            }
         }
     }
     
