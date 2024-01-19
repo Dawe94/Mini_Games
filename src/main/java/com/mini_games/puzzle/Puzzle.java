@@ -4,7 +4,6 @@ package com.mini_games.puzzle;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Stream;
 
 public class Puzzle {
     
@@ -31,9 +30,14 @@ public class Puzzle {
         partList.get(first).changePosition(partList.get(second));      
     }
     
+    public static void swap(List<PuzzlePart> partList, int first, int second, boolean animation) {
+        Collections.swap(partList, first, second);
+        partList.get(first).changePosition(partList.get(second), animation);      
+    }
+    
     public static int getBlankElement(List<PuzzlePart> partList) {
         for (int i = 0; i < partList.size(); i++) {
-            if (partList.get(i).isEmpty()) return i;
+            if (partList.get(i).isBlank()) return i;
         }
         return -1;
     }

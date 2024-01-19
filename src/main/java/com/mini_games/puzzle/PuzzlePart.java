@@ -1,6 +1,8 @@
 package com.mini_games.puzzle;
 
 import com.mini_games.Coordinates;
+import javafx.util.Duration;
+import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
@@ -10,19 +12,18 @@ public class PuzzlePart {
     private final Rectangle clipRectangle;
     private final ImageView imageView;
     private final Coordinates originalPosition;
+    private TranslateTransition transition;
     
     public PuzzlePart(Image image, Coordinates position) {
         clipRectangle = new Rectangle();
         imageView = new ImageView(image);
         this.originalPosition = position;
+        transition = new TranslateTransition(Duration.seconds(2), imageView);
         restorePosition();     
     }
     
     public PuzzlePart(Coordinates position) {
-        clipRectangle = new Rectangle();
-        imageView = new ImageView();
-        this.originalPosition = position;
-        restorePosition();     
+        this(null, position);     
     }
     
     public void setViewPort(double layoutY, double layoutX, double height, double width) {
@@ -44,6 +45,12 @@ public class PuzzlePart {
         imageView.setLayoutX(coordinates.getColumn());
     }
     
+    public void setPosition(Coordinates coordinates, boolean animation) {
+        transition.setToY(Math.round(coordinates.getColumn()));
+        transition.setToX(Math.round(coordinates.getRow()));
+        transition.play();
+    }
+    
     public Coordinates getPositon() {
         return new Coordinates(imageView.getLayoutY(), imageView.getLayoutX());
     }
@@ -51,6 +58,12 @@ public class PuzzlePart {
     public void changePosition(PuzzlePart other) {
         Coordinates otherPosition = other.getPositon();
         other.setPosition(this.getPositon());
+        this.setPosition(otherPosition);
+    }
+    
+    public void changePosition(PuzzlePart other, boolean animation) {
+        Coordinates otherPosition = other.getPositon();
+        other.setPosition(this.getPositon(), animation);
         this.setPosition(otherPosition);
     }
     
@@ -66,7 +79,7 @@ public class PuzzlePart {
         return imageView;
     }
     
-    public boolean isEmpty() {
+    public boolean isBlank() {
         return imageView.getImage() == null;
     }
     

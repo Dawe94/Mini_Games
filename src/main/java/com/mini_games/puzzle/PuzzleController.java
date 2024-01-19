@@ -31,7 +31,7 @@ public class PuzzleController implements SubController {
     
     private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/PuzzleImages/GreenEarth.jpg"),
             350, 350, true, true);
-    private final int numOfRows = 3;
+    private final int RATIO = 3;
     private final Pane gamePane;
     private final Pane mainPane;
     private Pane imagePane;
@@ -44,7 +44,6 @@ public class PuzzleController implements SubController {
        imagePane.getChildren().clear();
        listOfParts = setImageViews();
        gamePane.setOnKeyPressed(eh -> handleKeyEvent(eh.getCode()));
-       //gamePane.requestFocus();
     }
 
     @Override
@@ -55,9 +54,9 @@ public class PuzzleController implements SubController {
     }
     
     private List<PuzzlePart> setImageViews() {
-        double heightOfAPart = imagePane.getHeight() / numOfRows;
-        double widthOfAPart = imagePane.getWidth() / numOfRows;
-        int numOfParts = numOfRows * numOfRows;
+        double heightOfAPart = imagePane.getHeight() / RATIO;
+        double widthOfAPart = imagePane.getWidth() / RATIO;
+        int numOfParts = RATIO * RATIO;
         double currHeight = 0;
         double currWidth = 0;
         List<PuzzlePart> list = new ArrayList<>();
@@ -70,30 +69,30 @@ public class PuzzleController implements SubController {
             currentPart.decrementSize();
             list.add(currentPart);
             imagePane.getChildren().add(currentPart.getImagePart());           
-            currHeight = (i + 1) % numOfRows == 0 ? currHeight + heightOfAPart : currHeight;
-            currWidth = (i + 1) % numOfRows == 0 ? 0 : currWidth + widthOfAPart;
+            currHeight = (i + 1) % RATIO == 0 ? currHeight + heightOfAPart : currHeight;
+            currWidth = (i + 1) % RATIO == 0 ? 0 : currWidth + widthOfAPart;
         }      
         Puzzle.shuffle(list);
-        list.stream().forEach(p -> System.out.println(p.isEmpty()));
-        //list.stream().forEach(PuzzlePart::restorePosition);
         return list;
     }
 
     private void handleKeyEvent(KeyCode keyCode) {
         int blank = Puzzle.getBlankElement(listOfParts);
         if (blank != -1) {
+            boolean startOfRow = blank % RATIO == 0;
+            boolean endOfRow = (blank + 1) % RATIO == 0;
             switch (keyCode) {
                 case UP:
-                    if (blank - numOfRows >= 0) Puzzle.swap(listOfParts, blank - numOfRows, blank);
+                    if (blank - RATIO >= 0) Puzzle.swap(listOfParts, blank - RATIO, blank, true);
                     break;
                 case DOWN:
-                    if (blank + numOfRows < listOfParts.size()) Puzzle.swap(listOfParts, blank + numOfRows, blank);
+                    if (blank + RATIO < listOfParts.size()) Puzzle.swap(listOfParts, blank + RATIO, blank, true);
                     break;
                 case LEFT:
-                    if (blank - 1 >= 0) Puzzle.swap(listOfParts, blank - 1, blank);
+                    if (!startOfRow && blank - 1 >= 0) Puzzle.swap(listOfParts, blank - 1, blank, true);
                     break;
                 case RIGHT:
-                    if (blank + 1 < listOfParts.size()) Puzzle.swap(listOfParts, blank + 1, blank);
+                    if (!endOfRow && blank + 1 < listOfParts.size()) Puzzle.swap(listOfParts, blank + 1, blank, true);
                     break;
                 default:
             }
