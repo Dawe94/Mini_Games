@@ -7,6 +7,7 @@ com\mini_games\dynamictools\DynamicBackButton.class
 com\mini_games\guess_numbers\GuessNumberController.class
 com\mini_games\App.class
 com\mini_games\puzzle\PuzzlePart.class
+com\mini_games\puzzle\PuzzleController$1.class
 com\mini_games\puzzle\PuzzleController.class
 com\mini_games\guess_numbers\InvalidNumbersException.class
 com\mini_games\MainController.class

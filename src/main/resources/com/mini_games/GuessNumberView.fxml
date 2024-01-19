@@ -77,7 +77,7 @@
                </font></Button>
          </children>
       </Pane>
-      <Pane id="puzzlePane" fx:id="puzzlePane" prefHeight="459.0" prefWidth="455.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Pane id="puzzlePane" fx:id="puzzlePane" focusTraversable="true" prefHeight="459.0" prefWidth="455.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Pane id="imagePane" fx:id="imagePane" layoutX="53.0" layoutY="31.0" prefHeight="350.0" prefWidth="350.0" style="-fx-background-color: tan;" />
          </children>

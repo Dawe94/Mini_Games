@@ -15,10 +15,12 @@ public class Puzzle {
         }
     }
     
-    public static void unload(List<PuzzlePart> partList) {
-        for (int i = 0; i < partList.size(); i++) {
-            partList.get(i).restorePosition();
-        }
+    public static void solve(List<PuzzlePart> partList) {
+        partList.stream().forEach(PuzzlePart::restorePosition);
+    }
+    
+    public static boolean isReady(List<PuzzlePart> partList) {
+        return partList.stream().allMatch(PuzzlePart::isOnPlace);
     }
 
     

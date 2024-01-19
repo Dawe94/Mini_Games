@@ -64,8 +64,12 @@ public class PuzzlePart {
         this.setPosition(otherPosition);
     }
     
-    public final void restorePosition() {
+    public void restorePosition() {
         this.setPosition(originalPosition);
+    }
+    
+    public boolean isOnPlace() {
+        return getPositon().equals(originalPosition);
     }
 
     public ImageView getImagePart() {

@@ -6,6 +6,8 @@ import com.mini_games.dynamictools.DynamicTools;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import static javafx.scene.input.KeyCode.UP;
 import javafx.scene.layout.Pane;
 
 public class PuzzleController implements SubController {
@@ -41,6 +43,8 @@ public class PuzzleController implements SubController {
        imagePane = (Pane)checkedLookup(gamePane, "#imagePane");
        imagePane.getChildren().clear();
        listOfParts = setImageViews();
+       gamePane.setOnKeyPressed(eh -> handleKeyEvent(eh.getCode()));
+       //gamePane.requestFocus();
     }
 
     @Override
@@ -60,7 +64,6 @@ public class PuzzleController implements SubController {
         for (int i = 0; i < numOfParts; i++) {
             Coordinates position = new Coordinates(currHeight, currWidth);
             PuzzlePart currentPart = i == numOfParts - 1 ? new PuzzlePart(position) : new PuzzlePart(WIN_IMAGE, position);
-            //PuzzlePart currentPart = new PuzzlePart(WIN_IMAGE, position);
             currentPart.setSize(heightOfAPart, widthOfAPart);
             currentPart.getImagePart().setStyle("-fx-border-color: red;");
             currentPart.setViewPort(currHeight, currWidth, heightOfAPart,  widthOfAPart);
@@ -69,10 +72,25 @@ public class PuzzleController implements SubController {
             imagePane.getChildren().add(currentPart.getImagePart());           
             currHeight = (i + 1) % numOfRows == 0 ? currHeight + heightOfAPart : currHeight;
             currWidth = (i + 1) % numOfRows == 0 ? 0 : currWidth + widthOfAPart;
-        }
-        Puzzle.shuffle(list);
-        Puzzle.unload(list);
+        }      
+        Puzzle.shuffle(list);       
+        list.stream().forEach(PuzzlePart::restorePosition);
         return list;
     }
+
+    private void handleKeyEvent(KeyCode keyCode) {
+        switch (keyCode) {
+            case UP: System.out.println("Up");
+            break;
+            case DOWN: System.out.println("Down");
+            break;
+            case LEFT: System.out.println("Left");
+            break;
+            case RIGHT: System.out.println("Up");
+            break;
+        }
+    }
+    
+    
     
 }
