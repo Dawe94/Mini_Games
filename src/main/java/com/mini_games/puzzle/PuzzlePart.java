@@ -18,12 +18,12 @@ public class PuzzlePart {
         clipRectangle = new Rectangle();
         imageView = new ImageView(image);
         this.originalPosition = position;
-        transition = new TranslateTransition(Duration.seconds(2), imageView);
+        transition = new TranslateTransition(Duration.seconds(0.6), imageView);
         restorePosition();     
     }
     
     public PuzzlePart(Coordinates position) {
-        this(null, position);     
+        this(null, position);
     }
     
     public void setViewPort(double layoutY, double layoutX, double height, double width) {
@@ -46,8 +46,14 @@ public class PuzzlePart {
     }
     
     public void setPosition(Coordinates coordinates, boolean animation) {
-        transition.setToY(Math.round(coordinates.getColumn()));
-        transition.setToX(Math.round(coordinates.getRow()));
+        double toX = imageView.getTranslateX();
+        double toY = imageView.getTranslateY();
+        if (coordinates.getColumn() > getPositon().getColumn() + 5) toX += imageView.getFitHeight() / 0.97;
+        else if (coordinates.getColumn() < getPositon().getColumn() - 5) toX -= imageView.getFitHeight() / 0.97;
+        else if (coordinates.getRow() > getPositon().getRow() + 5) toY += imageView.getFitWidth() / 0.97;
+        else if (coordinates.getRow() < getPositon().getRow() - 5) toY -= imageView.getFitWidth() / 0.97;
+        transition.setToX(toX);
+        transition.setToY(toY);
         transition.play();
     }
     
