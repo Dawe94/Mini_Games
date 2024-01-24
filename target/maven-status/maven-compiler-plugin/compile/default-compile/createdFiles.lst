@@ -14,4 +14,5 @@ com\mini_games\MainController.class
 com\mini_games\guess_numbers\GuessNumberController$1.class
 com\mini_games\interfaces\Unfoldable.class
 com\mini_games\puzzle\Puzzle.class
+com\mini_games\puzzle\PuzzleScale.class
 com\mini_games\interfaces\SubController.class

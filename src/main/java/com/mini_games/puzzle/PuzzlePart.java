@@ -12,13 +12,11 @@ public class PuzzlePart {
     private final Rectangle clipRectangle;
     private final ImageView imageView;
     private final Coordinates originalPosition;
-    private TranslateTransition transition;
     
     public PuzzlePart(Image image, Coordinates position) {
         clipRectangle = new Rectangle();
         imageView = new ImageView(image);
         this.originalPosition = position;
-        transition = new TranslateTransition(Duration.seconds(0.6), imageView);
         restorePosition();     
     }
     
@@ -45,31 +43,14 @@ public class PuzzlePart {
         imageView.setLayoutX(coordinates.getColumn());
     }
     
-    public void setPosition(Coordinates coordinates, boolean animation) {
-        double toX = imageView.getTranslateX();
-        double toY = imageView.getTranslateY();
-        if (coordinates.getColumn() > getPositon().getColumn() + 5) toX += imageView.getFitHeight() / 0.97;
-        else if (coordinates.getColumn() < getPositon().getColumn() - 5) toX -= imageView.getFitHeight() / 0.97;
-        else if (coordinates.getRow() > getPositon().getRow() + 5) toY += imageView.getFitWidth() / 0.97;
-        else if (coordinates.getRow() < getPositon().getRow() - 5) toY -= imageView.getFitWidth() / 0.97;
-        transition.setToX(toX);
-        transition.setToY(toY);
-        transition.play();
-    }
-    
     public Coordinates getPositon() {
         return new Coordinates(imageView.getLayoutY(), imageView.getLayoutX());
+        
     }
     
     public void changePosition(PuzzlePart other) {
         Coordinates otherPosition = other.getPositon();
         other.setPosition(this.getPositon());
-        this.setPosition(otherPosition);
-    }
-    
-    public void changePosition(PuzzlePart other, boolean animation) {
-        Coordinates otherPosition = other.getPositon();
-        other.setPosition(this.getPositon(), animation);
         this.setPosition(otherPosition);
     }
     
