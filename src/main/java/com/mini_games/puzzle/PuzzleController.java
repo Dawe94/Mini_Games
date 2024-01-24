@@ -1,10 +1,14 @@
 package com.mini_games.puzzle;
 
-import com.mini_games.Coordinates;
 import com.mini_games.interfaces.SubController;
 import com.mini_games.dynamictools.DynamicTools;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.stream.Stream;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import static javafx.scene.input.KeyCode.UP;
@@ -26,24 +30,33 @@ public class PuzzleController implements SubController {
         this.mainPane = mainPane;
         this.dynamicTools = dynamicTools;
         dynamicTools.getBackButton().action(gamePane);
+        imageNumbers = new ArrayList<>();
+        Stream.iterate(1, i -> i <= 9, i -> i + 1)
+                .forEach(i -> imageNumbers.add( i));
+        Collections.shuffle(imageNumbers);
+        System.out.println(imageNumbers);
         unfold();
     }
     
-    private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/PuzzleImages/GreenEarth.jpg"),
-            350, 350, true, true);
+    private Image puzzleImage;
     private final Pane gamePane;
     private final Pane mainPane;
     private Pane imagePane;
     private Puzzle puzzle;
     private PuzzleScale scale;
     private final DynamicTools dynamicTools;
+    private List<Integer> imageNumbers;
+    private int imageCount = 1;
 
     @Override
     public void unfold() {
        imagePane = (Pane)checkedLookup(gamePane, "#imagePane");
        imagePane.getChildren().clear();
        scale = PuzzleScale.THREE_TO_THREE;
-       puzzle = Puzzle.createPuzzle(imagePane, WIN_IMAGE, scale);
+       if (imageCount >= imageNumbers.size()) imageCount = 1;
+       puzzleImage = new Image(getClass().getResourceAsStream("/com/mini_games/PuzzleImages/PuzzleImage"+ imageNumbers.get(imageCount++) +".jpg"),
+            350, 350, true, true);
+       puzzle = Puzzle.createPuzzle(imagePane, puzzleImage, scale);
        puzzle.shuffle();
        gamePane.setOnKeyPressed(eh -> handleKeyEvent(eh.getCode()));
     }
@@ -53,7 +66,10 @@ public class PuzzleController implements SubController {
         dynamicTools.getBackButton().action(gamePane);
         imagePane.getChildren().clear();
         scale = PuzzleScale.THREE_TO_THREE;
-        puzzle = Puzzle.createPuzzle(imagePane, WIN_IMAGE, scale);
+        if (imageCount >= imageNumbers.size()) imageCount = 1;
+        puzzleImage = new Image(getClass().getResourceAsStream("/com/mini_games/PuzzleImages/PuzzleImage"+imageCount++ +".jpg"),
+            350, 350, true, true);
+        puzzle = Puzzle.createPuzzle(imagePane, puzzleImage, scale);
         puzzle.shuffle();
     }
     

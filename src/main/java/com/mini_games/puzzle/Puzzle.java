@@ -23,7 +23,7 @@ public class Puzzle {
     public Puzzle(Pane puzzlePane, Image image, PuzzleScale scale) {
         partList = new ArrayList<>();
         buildPuzzlePane(puzzlePane, image, scale);
-        animation = new TranslateTransition(Duration.seconds(0.3));
+        animation = new TranslateTransition(Duration.seconds(0.2));
         animation.setOnFinished(eh -> isAnimationRunning = false);
 
     }
