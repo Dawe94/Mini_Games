@@ -38,19 +38,34 @@ public class PuzzlePart {
         setSize(imageView.getFitHeight() * 0.97, imageView.getFitWidth() * 0.97);   
     }
     
-    public void setPosition(Coordinates coordinates) {
-        imageView.setLayoutY(coordinates.getRow());
-        imageView.setLayoutX(coordinates.getColumn());
+    public Coordinates getPosition() {
+        return new Coordinates(imageView.getTranslateY(), imageView.getTranslateX());       
     }
     
-    public Coordinates getPositon() {
-        return new Coordinates(imageView.getLayoutY(), imageView.getLayoutX());
-        
-    }
+    public void setPosition(Coordinates coordinates) {
+        imageView.setTranslateY(coordinates.getRow());
+        imageView.setTranslateX(coordinates.getColumn());
+    }   
     
     public void changePosition(PuzzlePart other) {
-        Coordinates otherPosition = other.getPositon();
-        other.setPosition(this.getPositon());
+        Coordinates otherPosition = other.getPosition();
+        other.setPosition(this.getPosition());
+        this.setPosition(otherPosition);
+    }
+    
+    public void setPosition(Coordinates other, TranslateTransition animation) {
+        animation.setNode(imageView);
+        animation.setToX(other.getColumn());
+        animation.setToY(other.getRow());
+        animation.play();
+        System.out.println("Y = "+other.getRow()+", X = "+other.getColumn());
+        //imageView.setLayoutY(coordinates.getRow());
+        //imageView.setLayoutX(coordinates.getColumn());
+    }   
+    
+    public void changePosition(PuzzlePart other, TranslateTransition animation) {
+        Coordinates otherPosition = other.getPosition();
+        other.setPosition(this.getPosition(), animation);
         this.setPosition(otherPosition);
     }
     
@@ -59,7 +74,7 @@ public class PuzzlePart {
     }
     
     public boolean isOnPlace() {
-        return getPositon().equals(originalPosition);
+        return getPosition().equals(originalPosition);
     }
 
     public ImageView getImagePart() {

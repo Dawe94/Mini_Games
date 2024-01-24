@@ -44,6 +44,7 @@ public class PuzzleController implements SubController {
        imagePane.getChildren().clear();
        scale = PuzzleScale.THREE_TO_THREE;
        puzzle = Puzzle.createPuzzle(imagePane, WIN_IMAGE, scale);
+       puzzle.shuffle();
        gamePane.setOnKeyPressed(eh -> handleKeyEvent(eh.getCode()));
     }
 
@@ -53,6 +54,7 @@ public class PuzzleController implements SubController {
         imagePane.getChildren().clear();
         scale = PuzzleScale.THREE_TO_THREE;
         puzzle = Puzzle.createPuzzle(imagePane, WIN_IMAGE, scale);
+        puzzle.shuffle();
     }
     
     private void handleKeyEvent(KeyCode keyCode) {
@@ -62,16 +64,16 @@ public class PuzzleController implements SubController {
             boolean endOfRow = (blank + 1) % scale.getScale() == 0;
             switch (keyCode) {
                 case UP:
-                    if (blank - scale.getScale() >= 0) puzzle.swap(blank - scale.getScale(), blank);
+                    if (blank - scale.getScale() >= 0) puzzle.swap(blank - scale.getScale(), blank, true);
                     break;
                 case DOWN:
-                    if (blank + scale.getScale() < puzzle.getSize()) puzzle.swap(blank + scale.getScale(), blank);
+                    if (blank + scale.getScale() < puzzle.getSize()) puzzle.swap(blank + scale.getScale(), blank, true);
                     break;
                 case LEFT:
-                    if (!startOfRow && blank - 1 >= 0) puzzle.swap(blank - 1, blank);
+                    if (!startOfRow && blank - 1 >= 0) puzzle.swap(blank - 1, blank, true);
                     break;
                 case RIGHT:
-                    if (!endOfRow && blank + 1 < puzzle.getSize()) puzzle.swap(blank + 1, blank);
+                    if (!endOfRow && blank + 1 < puzzle.getSize()) puzzle.swap(blank + 1, blank, true);
                     break;
                 default:
             }
