@@ -80,6 +80,7 @@
       <Pane id="puzzlePane" fx:id="puzzlePane" focusTraversable="true" prefHeight="459.0" prefWidth="455.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Pane id="imagePane" fx:id="imagePane" layoutX="53.0" layoutY="31.0" prefHeight="350.0" prefWidth="350.0" style="-fx-background-color: tan;" />
+            <Button id="solveButton" fx:id="solveButton" layoutX="193.0" layoutY="393.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="69.0" text="Solve" />
          </children>
       </Pane>
       <Pane id="userInfoPane" fx:id="userInfoPane" layoutX="74.0" layoutY="159.0" prefHeight="211.0" prefWidth="308.0" visible="false">

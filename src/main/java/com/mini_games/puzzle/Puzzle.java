@@ -17,15 +17,38 @@ public class Puzzle {
     }
 
     private final List<PuzzlePart> partList;
+    private final PuzzleScale scale;
     private final TranslateTransition animation;
     private boolean isAnimationRunning;
 
     public Puzzle(Pane puzzlePane, Image image, PuzzleScale scale) {
         partList = new ArrayList<>();
-        buildPuzzlePane(puzzlePane, image, scale);
+        this.scale = scale;
+        buildPuzzlePane(puzzlePane, image);
         animation = new TranslateTransition(Duration.seconds(0.2));
         animation.setOnFinished(eh -> isAnimationRunning = false);
 
+    }
+
+    public List<PuzzlePart> getPartList() {
+        return partList;
+    }
+    
+    public int getBlankElement() {
+        for (int i = 0; i < partList.size(); i++) {
+            if (partList.get(i).isBlank()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int getSize() {
+        return partList.size();
+    }
+    
+    public PuzzleScale getPuzzleScale() {
+        return scale;
     }
 
     public void shuffle() {
@@ -58,23 +81,10 @@ public class Puzzle {
         }
     }
 
-    public int getBlankElement() {
-        for (int i = 0; i < partList.size(); i++) {
-            if (partList.get(i).isBlank()) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public int getSize() {
-        return partList.size();
-    }
-
-    private void buildPuzzlePane(Pane puzzlePane, Image image, PuzzleScale scale) {
-        double heightOfAPart = puzzlePane.getHeight() / scale.getScale();
-        double widthOfAPart = puzzlePane.getWidth() / scale.getScale();
-        int numOfParts = scale.getScale() * scale.getScale();
+    private void buildPuzzlePane(Pane puzzlePane, Image image) {
+        double heightOfAPart = puzzlePane.getHeight() / scale.getRatio();
+        double widthOfAPart = puzzlePane.getWidth() / scale.getRatio();
+        int numOfParts = scale.getRatio() * scale.getRatio();
         double currHeight = 0;
         double currWidth = 0;
         for (int i = 0; i < numOfParts; i++) {
@@ -86,8 +96,8 @@ public class Puzzle {
             currentPart.decrementSize();
             partList.add(currentPart);
             puzzlePane.getChildren().add(currentPart.getImagePart());
-            currHeight = (i + 1) % scale.getScale() == 0 ? currHeight + heightOfAPart : currHeight;
-            currWidth = (i + 1) % scale.getScale() == 0 ? 0 : currWidth + widthOfAPart;
+            currHeight = (i + 1) % scale.getRatio() == 0 ? currHeight + heightOfAPart : currHeight;
+            currWidth = (i + 1) % scale.getRatio() == 0 ? 0 : currWidth + widthOfAPart;
         }
     }
 

@@ -7,14 +7,14 @@ public enum PuzzleScale {
     FOUR_TO_FOUR(4),
     FIVE_TO_FIVE(5);
     
-    private PuzzleScale(int scale) {
-        this.scale = scale;
+    private PuzzleScale(int ratio) {
+        this.ratio = ratio;
     }
     
-    private int scale;
+    private int ratio;
     
-    public int getScale() {
-        return scale;
+    public int getRatio() {
+        return ratio;
     }
     
 }

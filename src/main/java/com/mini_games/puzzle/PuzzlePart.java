@@ -1,7 +1,6 @@
 package com.mini_games.puzzle;
 
 import com.mini_games.Coordinates;
-import javafx.util.Duration;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -54,11 +53,13 @@ public class PuzzlePart {
     }
     
     public void setPosition(Coordinates other, TranslateTransition animation) {
+        
         animation.setNode(imageView);
         animation.setToX(other.getColumn());
         animation.setToY(other.getRow());
         animation.play();
         System.out.println("Y = "+other.getRow()+", X = "+other.getColumn());
+        
         //imageView.setLayoutY(coordinates.getRow());
         //imageView.setLayoutX(coordinates.getColumn());
     }   
