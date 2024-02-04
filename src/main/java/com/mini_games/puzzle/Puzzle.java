@@ -19,15 +19,19 @@ public class Puzzle {
     private final List<PuzzlePart> partList;
     private final PuzzleScale scale;
     private final TranslateTransition animation;
-    private boolean isAnimationRunning;
+    private boolean animationRunning;
 
     public Puzzle(Pane puzzlePane, Image image, PuzzleScale scale) {
         partList = new ArrayList<>();
         this.scale = scale;
         buildPuzzlePane(puzzlePane, image);
         animation = new TranslateTransition(Duration.seconds(0.2));
-        animation.setOnFinished(eh -> isAnimationRunning = false);
+        animation.setOnFinished(eh -> animationRunning = false);
 
+    }
+    
+    public boolean isAnimationRunning() {
+        return animationRunning;
     }
 
     public List<PuzzlePart> getPartList() {
@@ -56,7 +60,7 @@ public class Puzzle {
         for (int i = 0; i < partList.size() * 2; i++) {
             int first = random.nextInt(partList.size());
             int second = random.nextInt(partList.size());
-            swap(first, second);
+            swap(first, second, false);
         }
     }
 
@@ -68,16 +72,19 @@ public class Puzzle {
         return partList.stream().allMatch(PuzzlePart::isOnPlace);
     }
 
-    public void swap(int first, int second) {
-        Collections.swap(partList, first, second);
-        partList.get(first).changePosition(partList.get(second));
-    }
-
-    public void swap(int first, int second, boolean withAnimation) {
-        if (!isAnimationRunning) {
-            isAnimationRunning = true;
+    public boolean swap(int first, int second, boolean withAnimation) {
+        if (withAnimation) {
+            if (!animationRunning) {
+                animationRunning = true;
+                Collections.swap(partList, first, second);
+                partList.get(first).changePosition(partList.get(second), animation);
+                return true;
+            }
+            return false;
+        } else {
             Collections.swap(partList, first, second);
-            partList.get(first).changePosition(partList.get(second), animation);
+            partList.get(first).changePosition(partList.get(second));
+            return true;
         }
     }
 

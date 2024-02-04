@@ -33,6 +33,10 @@ public class PuzzlePart {
         clip();
     }
     
+    public void insertNumber(int number) {
+        
+    }
+    
     public void decrementSize() {
         setSize(imageView.getFitHeight() * 0.97, imageView.getFitWidth() * 0.97);   
     }
@@ -53,21 +57,17 @@ public class PuzzlePart {
     }
     
     public void setPosition(Coordinates other, TranslateTransition animation) {
-        
         animation.setNode(imageView);
         animation.setToX(other.getColumn());
         animation.setToY(other.getRow());
         animation.play();
         System.out.println("Y = "+other.getRow()+", X = "+other.getColumn());
-        
-        //imageView.setLayoutY(coordinates.getRow());
-        //imageView.setLayoutX(coordinates.getColumn());
     }   
     
     public void changePosition(PuzzlePart other, TranslateTransition animation) {
         Coordinates otherPosition = other.getPosition();
-        other.setPosition(this.getPosition(), animation);
-        this.setPosition(otherPosition);
+        other.setPosition(this.getPosition());
+        this.setPosition(otherPosition, animation);
     }
     
     public void restorePosition() {

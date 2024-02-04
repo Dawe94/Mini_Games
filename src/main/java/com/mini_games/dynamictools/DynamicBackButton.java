@@ -12,6 +12,7 @@ public class DynamicBackButton {
         this.mainPane = mainPane;
         this.backButton = backButton;
         this.backButton.toFront();
+        this.backButton.setFocusTraversable(false);
     }
     
     public void action(Pane gamePane) {
