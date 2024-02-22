@@ -72,7 +72,6 @@ public class PuzzlePart {
         animation.setToX(other.getColumn());
         animation.setToY(other.getRow());
         animation.play();
-        System.out.println("Y = "+other.getRow()+", X = "+other.getColumn());
     }   
     
     public void changePosition(PuzzlePart other, TranslateTransition animation) {

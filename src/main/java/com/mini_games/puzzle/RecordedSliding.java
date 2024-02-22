@@ -6,62 +6,54 @@ import java.util.Deque;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class RecordedSiding {
+public class RecordedSliding implements Sliding {
 
     private final Puzzle puzzle;
-    private Deque<Integer> recorder = new LinkedList<>();
+    private final Deque<Integer> recorder = new LinkedList<>();
     private final int RATIO;
     private int blankPos;
 
-    public RecordedSiding(Puzzle puzzle) {
+    public RecordedSliding(Puzzle puzzle) {
         this.puzzle = puzzle;
         RATIO = puzzle.getPuzzleScale().getRatio();
         blankPos = puzzle.getBlankElement();
     }
 
+    @Override
     public boolean moveUp(boolean withAnimation) {
         if (blankPos - RATIO >= 0) {
-            puzzle.swap(blankPos, blankPos - RATIO, withAnimation);
-            recorder.addLast(blankPos);
-            blankPos = blankPos - RATIO;
-            return true;
+            return swap(blankPos - RATIO, withAnimation);
         }
         return false;
     }
 
+    @Override
     public boolean moveDown(boolean withAnimation) {
         if (blankPos + RATIO < puzzle.getSize()) {
-            puzzle.swap(blankPos, blankPos + RATIO, withAnimation);
-            recorder.addLast(blankPos);
-            blankPos = blankPos + RATIO;
-            return true;
-
+            return swap(blankPos + RATIO, withAnimation);
         }
         return false;
     }
 
+    @Override
     public boolean moveLeft(boolean withAnimation) {
         if (blankPos % RATIO != 0) {
-            puzzle.swap(blankPos, blankPos - 1, withAnimation);
-            recorder.addLast(blankPos);
-            blankPos = blankPos - 1;
-            return true;
+            return swap(blankPos - 1, withAnimation);
         }
         return false;
     }
 
+    @Override
     public boolean moveRight(boolean withAnimation) {
         if ((blankPos + 1) % RATIO != 0) {
-            puzzle.swap(blankPos, blankPos + 1, withAnimation);
-            recorder.addLast(blankPos);
-            blankPos = blankPos + 1;
-            return true;
+            return swap(blankPos + 1, withAnimation);
         }
         return false;
     }
 
+    @Override
     public boolean undo(boolean withAnimation) {
-        if (!recorder.isEmpty() && !puzzle.isAnimationRunning()) {            
+        if (!recorder.isEmpty() && !puzzle.isAnimationRunning()) {
             Integer element = recorder.removeLast();
             puzzle.swap(blankPos, element, withAnimation);
             blankPos = element;
@@ -70,48 +62,56 @@ public class RecordedSiding {
         return false;
     }
 
+    @Override
     public void solve(boolean withAnimation) {
-        deleteDoubleMills();
-        puzzle.getAnimation().setOnFinished(eh -> {
-            puzzle.setAnimationFalse();
+        if (!puzzle.isReady()) {
+            deleteDoubleMills();
+            puzzle.getAnimation().setOnFinished(eh -> {
+                puzzle.setAnimationFalse();
+                solve();
+            });
             solve();
-        });
-        solve();
+        }
     }
 
-    public void shuffle(boolean withAnimation) {
+    @Override
+    public void shuffle() {
         int index = 0;
-        int counter = 0;
         Direction current = Direction.getRandomDirection();
         Direction prev = current;
         int numberOfSwaps = puzzle.getPartList().size() * 4;
         while (index < numberOfSwaps) {
-            if (move(current, withAnimation)) {
+            if (move(current)) {
                 prev = current;
                 index++;
             }
-            counter++;
             current = Direction.getNonOppositeRandomDirection(prev);
         }
-        System.out.println(counter);
     }
-    
+
+    private boolean swap(int newBlankPos, boolean withAnimation) {
+        puzzle.swap(blankPos, newBlankPos, withAnimation);
+        recorder.addLast(blankPos);
+        blankPos = newBlankPos;
+        return true;
+    }
+
     private void solve() {
         if (!recorder.isEmpty()) {
             undo(true);
         }
     }
 
-    private boolean move(Direction direction, boolean withAnimation) {
+    private boolean move(Direction direction) {
         switch (direction) {
             case UP:
-                return moveUp(withAnimation);
+                return moveUp(false);
             case DOWN:
-                return moveDown(withAnimation);
+                return moveDown(false);
             case LEFT:
-                return moveLeft(withAnimation);
+                return moveLeft(false);
             case RIGHT:
-                return moveRight(withAnimation);
+                return moveRight(false);
             default:
                 return false;
         }

@@ -28,7 +28,7 @@ public class PuzzleController implements SubController {
         this.dynamicTools = dynamicTools;
         dynamicTools.getBackButton().action(gamePane);
         imageNumbers = new ArrayList<>();
-        Stream.iterate(1, i -> i <= 9, i -> i + 1)
+        Stream.iterate(1, i -> i <= 10, i -> i + 1)
                 .forEach(i -> imageNumbers.add(i));
         Collections.shuffle(imageNumbers);
         System.out.println(imageNumbers);
@@ -42,7 +42,7 @@ public class PuzzleController implements SubController {
     private Button undoButton;
     private Puzzle puzzle;
     private PuzzleScale scale;
-    private RecordedSiding recorder;
+    private Sliding slider;
     private final DynamicTools dynamicTools;
     private List<Integer> imageNumbers;
     private int imageCount = 1;
@@ -70,15 +70,15 @@ public class PuzzleController implements SubController {
     }
 
     private void setPuzzle() {
-        scale = PuzzleScale.FOUR_TO_FOUR;
+        scale = PuzzleScale.SIX_TO_SIX;
         if (imageCount >= imageNumbers.size()) {
             imageCount = 1;
         }
         puzzleImage = new Image(getClass().getResourceAsStream("/com/mini_games/PuzzleImages/PuzzleImage" + imageNumbers.get(imageCount++) + ".jpg"),
                 350, 350, true, true);
         puzzle = Puzzle.createPuzzle(imagePane, puzzleImage, scale);
-        recorder = new RecordedSiding(puzzle);
-        recorder.shuffle(false);
+        slider = new RecordedSliding(puzzle);
+        slider.shuffle();
         setDisableButtons(false);
         System.out.println(puzzle.isReady());
     }
@@ -87,16 +87,16 @@ public class PuzzleController implements SubController {
         if (!puzzle.isAnimationRunning()) {
             switch (keyCode) {
                 case UP:
-                    recorder.moveUp(true);
+                    slider.moveUp(true);
                     break;
                 case DOWN:
-                    recorder.moveDown(true);
+                    slider.moveDown(true);
                     break;
                 case LEFT:
-                    recorder.moveLeft(true);
+                    slider.moveLeft(true);
                     break;
                 case RIGHT:
-                    recorder.moveRight(true);
+                    slider.moveRight(true);
                     break;
                 default:
             }
@@ -107,9 +107,9 @@ public class PuzzleController implements SubController {
     private void setButtons() {
         solveButton.setOnAction(eh -> {
             setDisableButtons(true);
-            recorder.solve(true);
+            slider.solve(true);
         });
-        undoButton.setOnAction(eh -> recorder.undo(true));
+        undoButton.setOnAction(eh -> slider.undo(true));
         undoButton.setFocusTraversable(false);
         solveButton.setFocusTraversable(false);
     }
