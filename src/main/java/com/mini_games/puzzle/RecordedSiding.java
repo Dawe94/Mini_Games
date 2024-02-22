@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.Deque;
 import java.util.ArrayList;
 import java.util.Objects;
-import javafx.application.Platform;
 
 public class RecordedSiding {
 
@@ -61,7 +60,7 @@ public class RecordedSiding {
         return false;
     }
 
-    public boolean replace(boolean withAnimation) {
+    public boolean undo(boolean withAnimation) {
         if (!recorder.isEmpty() && !puzzle.isAnimationRunning()) {            
             Integer element = recorder.removeLast();
             puzzle.swap(blankPos, element, withAnimation);
@@ -73,9 +72,11 @@ public class RecordedSiding {
 
     public void solve(boolean withAnimation) {
         deleteDoubleMills();
-        while (replace(withAnimation)) {
-            
-        }
+        puzzle.getAnimation().setOnFinished(eh -> {
+            puzzle.setAnimationFalse();
+            solve();
+        });
+        solve();
     }
 
     public void shuffle(boolean withAnimation) {
@@ -83,7 +84,8 @@ public class RecordedSiding {
         int counter = 0;
         Direction current = Direction.getRandomDirection();
         Direction prev = current;
-        while (index < 50) {
+        int numberOfSwaps = puzzle.getPartList().size() * 4;
+        while (index < numberOfSwaps) {
             if (move(current, withAnimation)) {
                 prev = current;
                 index++;
@@ -92,6 +94,12 @@ public class RecordedSiding {
             current = Direction.getNonOppositeRandomDirection(prev);
         }
         System.out.println(counter);
+    }
+    
+    private void solve() {
+        if (!recorder.isEmpty()) {
+            undo(true);
+        }
     }
 
     private boolean move(Direction direction, boolean withAnimation) {

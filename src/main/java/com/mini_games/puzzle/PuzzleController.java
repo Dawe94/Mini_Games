@@ -63,9 +63,14 @@ public class PuzzleController implements SubController {
         imagePane.getChildren().clear();
         setPuzzle();
     }
+    
+    private void setDisableButtons(boolean value) {
+        solveButton.setDisable(value);
+        undoButton.setDisable(value);
+    }
 
     private void setPuzzle() {
-        scale = PuzzleScale.THREE_TO_THREE;
+        scale = PuzzleScale.FOUR_TO_FOUR;
         if (imageCount >= imageNumbers.size()) {
             imageCount = 1;
         }
@@ -74,33 +79,45 @@ public class PuzzleController implements SubController {
         puzzle = Puzzle.createPuzzle(imagePane, puzzleImage, scale);
         recorder = new RecordedSiding(puzzle);
         recorder.shuffle(false);
+        setDisableButtons(false);
+        System.out.println(puzzle.isReady());
     }
 
     private void handleKeyEvent(KeyCode keyCode) {
         if (!puzzle.isAnimationRunning()) {
-        switch (keyCode) {
-            case UP:
-                recorder.moveUp(true);
-                break;
-            case DOWN:
-                recorder.moveDown(true);
-                break;
-            case LEFT:
-                recorder.moveLeft(true);
-                break;
-            case RIGHT:
-                recorder.moveRight(true);
-                break;
-            default:
+            switch (keyCode) {
+                case UP:
+                    recorder.moveUp(true);
+                    break;
+                case DOWN:
+                    recorder.moveDown(true);
+                    break;
+                case LEFT:
+                    recorder.moveLeft(true);
+                    break;
+                case RIGHT:
+                    recorder.moveRight(true);
+                    break;
+                default:
+            }
         }
-        }
+        checkResult();
     }
 
     private void setButtons() {
-        solveButton.setOnAction(eh -> recorder.solve(true));
-        undoButton.setOnAction(eh -> recorder.replace(true));
+        solveButton.setOnAction(eh -> {
+            setDisableButtons(true);
+            recorder.solve(true);
+        });
+        undoButton.setOnAction(eh -> recorder.undo(true));
         undoButton.setFocusTraversable(false);
         solveButton.setFocusTraversable(false);
+    }
+
+    private void checkResult() {
+        if (puzzle.isReady()) {
+            System.out.println("WIN!!!!!!!");
+        }     
     }
 
 }

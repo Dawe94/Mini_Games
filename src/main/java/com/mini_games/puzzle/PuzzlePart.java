@@ -2,25 +2,34 @@ package com.mini_games.puzzle;
 
 import com.mini_games.Coordinates;
 import javafx.animation.TranslateTransition;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 public class PuzzlePart {
     
+    private final Pane pane;
     private final Rectangle clipRectangle;
     private final ImageView imageView;
     private final Coordinates originalPosition;
+    private final int place;
     
-    public PuzzlePart(Image image, Coordinates position) {
+    public PuzzlePart(Image image, Coordinates position, int place) {
+        pane = new Pane();
         clipRectangle = new Rectangle();
-        imageView = new ImageView(image);
+        imageView = new ImageView(image);       
+        pane.getChildren().add(imageView);
+        imageView.fitHeightProperty().bind(pane.heightProperty());
+        imageView.fitWidthProperty().bind(pane.widthProperty());             
         this.originalPosition = position;
+        this.place = place;
         restorePosition();     
     }
     
-    public PuzzlePart(Coordinates position) {
-        this(null, position);
+    public PuzzlePart(Coordinates position, int place) {
+        this(null, position, place);
     }
     
     public void setViewPort(double layoutY, double layoutX, double height, double width) {
@@ -28,26 +37,28 @@ public class PuzzlePart {
     }
     
     public void setSize(double height, double width) {
-        imageView.setFitHeight(height);
-        imageView.setFitWidth(width);
-        clip();
+       pane.setPrefSize(width, height);
+       clip();
     }
     
-    public void insertNumber(int number) {
-        
+    public void showPlaceOnImage() {
+        Label label = new Label(String.valueOf(place));
+        label.setStyle("-fx-text-fill: white; -fx-opacity: 0.85; -fx-font-size: 30;");
+        pane.getChildren().add(label);  
     }
     
     public void decrementSize() {
-        setSize(imageView.getFitHeight() * 0.97, imageView.getFitWidth() * 0.97);   
+       pane.setPrefSize(pane.getPrefWidth() * 0.97, pane.getPrefHeight() * 0.97);
+       clip();
     }
     
     public Coordinates getPosition() {
-        return new Coordinates(imageView.getTranslateY(), imageView.getTranslateX());       
+     return new Coordinates(pane.getTranslateY(), pane.getTranslateX());
     }
     
     public void setPosition(Coordinates coordinates) {
-        imageView.setTranslateY(coordinates.getRow());
-        imageView.setTranslateX(coordinates.getColumn());
+        pane.setTranslateY(coordinates.getRow());
+        pane.setTranslateX(coordinates.getColumn());
     }   
     
     public void changePosition(PuzzlePart other) {
@@ -57,7 +68,7 @@ public class PuzzlePart {
     }
     
     public void setPosition(Coordinates other, TranslateTransition animation) {
-        animation.setNode(imageView);
+        animation.setNode(pane);
         animation.setToX(other.getColumn());
         animation.setToY(other.getRow());
         animation.play();
@@ -74,24 +85,28 @@ public class PuzzlePart {
         this.setPosition(originalPosition);
     }
     
-    public boolean isOnPlace() {
-        return getPosition().equals(originalPosition);
+    public int getPlace() {
+        return place;
     }
 
     public ImageView getImagePart() {
         return imageView;
     }
     
+    public Pane getImagePane() {
+        return pane;
+    }
+    
     public boolean isBlank() {
         return imageView.getImage() == null;
     }
     
-    private void clip() {
-        clipRectangle.setWidth(imageView.getFitWidth());
-        clipRectangle.setHeight(imageView.getFitHeight());
+    private void clip() {       
+        clipRectangle.setWidth(pane.getPrefWidth());
+        clipRectangle.setHeight(pane.getPrefHeight());
         clipRectangle.setArcWidth(20);
         clipRectangle.setArcHeight(20);
-        imageView.setClip(clipRectangle);
+        pane.setClip(clipRectangle);
     }
     
 }

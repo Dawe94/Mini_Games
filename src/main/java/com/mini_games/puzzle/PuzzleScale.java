@@ -5,7 +5,8 @@ public enum PuzzleScale {
     
     THREE_TO_THREE(3),
     FOUR_TO_FOUR(4),
-    FIVE_TO_FIVE(5);
+    FIVE_TO_FIVE(5),
+    SIX_TO_SIX(6);
     
     private PuzzleScale(int ratio) {
         this.ratio = ratio;

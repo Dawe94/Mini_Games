@@ -26,12 +26,15 @@ public class Puzzle {
         this.scale = scale;
         buildPuzzlePane(puzzlePane, image);
         animation = new TranslateTransition(Duration.seconds(0.2));
-        animation.setOnFinished(eh -> animationRunning = false);
-
+        animation.setOnFinished(eh -> setAnimationFalse());
     }
     
     public boolean isAnimationRunning() {
         return animationRunning;
+    }
+    
+    public void setAnimationFalse() {
+        animationRunning = false;
     }
 
     public List<PuzzlePart> getPartList() {
@@ -54,10 +57,14 @@ public class Puzzle {
     public PuzzleScale getPuzzleScale() {
         return scale;
     }
+    
+    public TranslateTransition getAnimation() {
+        return animation;
+    }
 
     public void shuffle() {
         Random random = new Random();
-        for (int i = 0; i < partList.size() * 2; i++) {
+        for (int i = 0; i < partList.size() * 100; i++) {
             int first = random.nextInt(partList.size());
             int second = random.nextInt(partList.size());
             swap(first, second, false);
@@ -69,7 +76,10 @@ public class Puzzle {
     }
 
     public boolean isReady() {
-        return partList.stream().allMatch(PuzzlePart::isOnPlace);
+        for (int i = 0; i < partList.size(); i++) {
+            if (partList.get(i).getPlace() != i + 1) return false;
+        }
+        return true;
     }
 
     public boolean swap(int first, int second, boolean withAnimation) {
@@ -96,13 +106,19 @@ public class Puzzle {
         double currWidth = 0;
         for (int i = 0; i < numOfParts; i++) {
             Coordinates position = new Coordinates(currHeight, currWidth);
-            PuzzlePart currentPart = i == numOfParts - 1 ? new PuzzlePart(position) : new PuzzlePart(image, position);
+            PuzzlePart currentPart;
+            if (i == numOfParts - 1) {
+                currentPart = new PuzzlePart(position, i + 1);
+            } else {
+                currentPart = new PuzzlePart(image, position, i + 1);
+                currentPart.showPlaceOnImage();
+            }
             currentPart.setSize(heightOfAPart, widthOfAPart);
             currentPart.getImagePart().setStyle("-fx-border-color: red;");
             currentPart.setViewPort(currHeight, currWidth, heightOfAPart, widthOfAPart);
-            currentPart.decrementSize();
+            currentPart.decrementSize();           
             partList.add(currentPart);
-            puzzlePane.getChildren().add(currentPart.getImagePart());
+            puzzlePane.getChildren().add(currentPart.getImagePane());
             currHeight = (i + 1) % scale.getRatio() == 0 ? currHeight + heightOfAPart : currHeight;
             currWidth = (i + 1) % scale.getRatio() == 0 ? 0 : currWidth + widthOfAPart;
         }
