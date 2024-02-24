@@ -16,23 +16,13 @@ public class PuzzleController implements SubController {
 
     private static PuzzleController controller;
 
-    public static PuzzleController getInstance(Pane gamePane, Pane infoPane, DynamicTools dynamicTools) {
+    public static PuzzleController getInstance(Pane gamePane, DynamicTools dynamicTools) {
         if (controller == null) {
-            controller = new PuzzleController(gamePane, infoPane, dynamicTools);
+            controller = new PuzzleController(gamePane, dynamicTools);
+        } else {
+            controller.restore();
         }
         return controller;
-    }
-
-    private PuzzleController(Pane gamePane, Pane mainPane, DynamicTools dynamicTools) {
-        this.gamePane = gamePane;
-        this.dynamicTools = dynamicTools;
-        dynamicTools.getBackButton().action(gamePane);
-        imageNumbers = new ArrayList<>();
-        Stream.iterate(1, i -> i <= 10, i -> i + 1)
-                .forEach(i -> imageNumbers.add(i));
-        Collections.shuffle(imageNumbers);
-        System.out.println(imageNumbers);
-        unfold();
     }
 
     private Image puzzleImage;
@@ -46,22 +36,37 @@ public class PuzzleController implements SubController {
     private final DynamicTools dynamicTools;
     private List<Integer> imageNumbers;
     private int imageCount = 1;
+    
+    private PuzzleController(Pane gamePane, DynamicTools dynamicTools) {
+        this.gamePane = gamePane;
+        this.dynamicTools = dynamicTools;           
+        imageNumbers = new ArrayList<>();
+        Stream.iterate(1, i -> i <= 10, i -> i + 1)
+                .forEach(i -> imageNumbers.add(i));
+        Collections.shuffle(imageNumbers);
+        unfold();
+    }
+    
+    @Override
+    public void startGame(Pane mainPane) {
+        dynamicTools.getBackButton().action(gamePane);
+        setPuzzle();
+        mainPane.setVisible(false);
+        gamePane.setVisible(true);
+    }
 
     @Override
     public void unfold() {
         imagePane = (Pane) checkedLookup(gamePane, "#imagePane");
         solveButton = (Button)checkedLookup(gamePane, "#solveButton");
         undoButton = (Button)checkedLookup(gamePane, "#undoButton");
-        setButtons();
-        setPuzzle();
-        gamePane.setOnKeyPressed(eh -> handleKeyEvent(eh.getCode()));
+        setButtons();       
+        gamePane.setOnKeyPressed(eh -> handleKeyEvent(eh.getCode()));       
     }
 
     @Override
     public void restore() {
-        dynamicTools.getBackButton().action(gamePane);
-        imagePane.getChildren().clear();
-        setPuzzle();
+        imagePane.getChildren().clear();        
     }
     
     private void setDisableButtons(boolean value) {

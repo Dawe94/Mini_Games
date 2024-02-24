@@ -26,44 +26,21 @@ public class MainController implements Initializable {
     @FXML
     private Pane puzzlePane;
     @FXML
-    private Pane userInfoPane;
-    @FXML
     private Button backButton;
     @FXML 
     private Pane infoPane;
     //</editor-fold>
-
-    @FXML
-    public void checkNumbersAction() {
-        guessNumber.checkNumbersAction();    
-    }
     
     @FXML
-    public void handleGuessNumberButton() {
-        //mainPane.setVisible(false);
-        if (guessNumber == null) {
-            guessNumber = GuessNumberController.getInstance(guessNumberPane, mainPane, dynamicTools);
-        } else {
-            guessNumber.restore();
-        }
-        guessNumberPane.setVisible(true);
-        mainPane.setVisible(false);
+    public void handleGuessNumberButton() {       
+        guessNumber = GuessNumberController.getInstance(guessNumberPane, dynamicTools);           
+        guessNumber.startGame(mainPane);
     }
-    
-    @FXML
-    public void handleInfoOkButton() {
-        
-    }
-    
+     
     @FXML
     public void handlePuzzleButton() {
-        if (puzzle == null) {
-            puzzle = PuzzleController.getInstance(puzzlePane, mainPane, dynamicTools);
-        } else {
-            puzzle.restore();
-        }
-        mainPane.setVisible(false);
-        puzzlePane.setVisible(true);
+        puzzle = PuzzleController.getInstance(puzzlePane, dynamicTools);
+        puzzle.startGame(mainPane);
     }
     
     @Override

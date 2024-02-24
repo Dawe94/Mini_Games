@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
@@ -18,23 +19,13 @@ public final class GuessNumberController implements SubController {
 
     private static GuessNumberController controller;
 
-    public static GuessNumberController getInstance(Pane gamePane, Pane mainPane, DynamicTools dynamicTools) {
+    public static GuessNumberController getInstance(Pane gamePane, DynamicTools dynamicTools) {
         if (controller == null) {
-            controller = new GuessNumberController(gamePane, mainPane, dynamicTools);
+            controller = new GuessNumberController(gamePane, dynamicTools);
+        } else {
+            controller.restore();
         }
         return controller;
-    }
-
-    private GuessNumberController(Pane gamePane, Pane mainPane, DynamicTools dynamicTools) {
-        this.gamePane = gamePane;
-        this.mainPane = mainPane;
-        this.dynamicTools = dynamicTools;
-        dynamicTools.getBackButton().action(gamePane);
-        dynamicTools.getInfoPane().setButtonAction(d -> handleOkButton(d));
-        numbers = Numbers.generate(10);
-        unfold();
-        setListener();
-        getRelations();
     }
 
     private final List<TextField> inputs = new ArrayList<>();
@@ -43,15 +34,33 @@ public final class GuessNumberController implements SubController {
     private final Image LOSE_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/policeCar.jpg"));
     private final String MISSING_NUMBER = "You have to write a number in all of number fields!";
     private final Pane gamePane;
-    private final Pane mainPane;
     private Numbers numbers;
     private boolean gameOver;
     private int round;
     private final DynamicTools dynamicTools;
+    
+    private GuessNumberController(Pane gamePane, DynamicTools dynamicTools) {
+        this.gamePane = gamePane;
+        this.dynamicTools = dynamicTools;       
+        dynamicTools.getInfoPane().setButtonAction(d -> handleOkButton(d));      
+        unfold();
+        setListener();      
+    }
+    
+    @Override
+    public void startGame(Pane mainPane) {
+        numbers = Numbers.generate(10);
+        dynamicTools.getBackButton().action(gamePane);
+        getRelations();
+        mainPane.setVisible(false);
+        gamePane.setVisible(true);
+    }
 
     @Override
     public void unfold() {
         //Unfold guessNumber Pane (Game Pane)
+        Button checkButton = (Button)checkedLookup(gamePane, "#checkButton");
+        checkButton.setOnAction(eh -> checkNumbersAction());
         HBox hbox = (HBox)checkedLookup(gamePane, "#hbox");
         for (int i = 1; i <= 4; i++) {
             inputs.add((TextField)checkedLookup(hbox, "#input" + i));
@@ -90,11 +99,8 @@ public final class GuessNumberController implements SubController {
 
     @Override
     public void restore() {
-        dynamicTools.getBackButton().action(gamePane);
         gameOver = false;
         round = 0;
-        numbers = Numbers.generate(10);
-        getRelations();
         for (TextField tf : inputs) {
             tf.clear();
             tf.setStyle("-fx-text-fill:black; -fx-background-color: #dcdcdc;");
