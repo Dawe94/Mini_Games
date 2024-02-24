@@ -19,9 +19,9 @@ public final class GuessNumberController implements SubController {
 
     private static GuessNumberController controller;
 
-    public static GuessNumberController getInstance(Pane gamePane, DynamicTools dynamicTools) {
+    public static GuessNumberController getInstance(Pane mainPane, Pane gamePane, DynamicTools dynamicTools) {
         if (controller == null) {
-            controller = new GuessNumberController(gamePane, dynamicTools);
+            controller = new GuessNumberController(mainPane, gamePane, dynamicTools);
         } else {
             controller.restore();
         }
@@ -33,13 +33,15 @@ public final class GuessNumberController implements SubController {
     private final Image WIN_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/GOLD-BARS.jpg"));
     private final Image LOSE_IMAGE = new Image(getClass().getResourceAsStream("/com/mini_games/policeCar.jpg"));
     private final String MISSING_NUMBER = "You have to write a number in all of number fields!";
+    private final Pane mainPane;
     private final Pane gamePane;
     private Numbers numbers;
     private boolean gameOver;
     private int round;
     private final DynamicTools dynamicTools;
     
-    private GuessNumberController(Pane gamePane, DynamicTools dynamicTools) {
+    private GuessNumberController(Pane mainPane, Pane gamePane, DynamicTools dynamicTools) {
+        this.mainPane = mainPane;
         this.gamePane = gamePane;
         this.dynamicTools = dynamicTools;       
         dynamicTools.getInfoPane().setButtonAction(d -> handleOkButton(d));      
@@ -48,7 +50,7 @@ public final class GuessNumberController implements SubController {
     }
     
     @Override
-    public void startGame(Pane mainPane) {
+    public void startGame(String diffName) {
         numbers = Numbers.generate(10);
         dynamicTools.getBackButton().action(gamePane);
         getRelations();

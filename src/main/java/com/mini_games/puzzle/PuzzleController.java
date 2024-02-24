@@ -16,9 +16,9 @@ public class PuzzleController implements SubController {
 
     private static PuzzleController controller;
 
-    public static PuzzleController getInstance(Pane gamePane, DynamicTools dynamicTools) {
+    public static PuzzleController getInstance(Pane mainPane, Pane gamePane, DynamicTools dynamicTools) {
         if (controller == null) {
-            controller = new PuzzleController(gamePane, dynamicTools);
+            controller = new PuzzleController(mainPane, gamePane, dynamicTools);
         } else {
             controller.restore();
         }
@@ -27,6 +27,7 @@ public class PuzzleController implements SubController {
 
     private Image puzzleImage;
     private final Pane gamePane;
+    private final Pane mainPane;
     private Pane imagePane;
     private Button solveButton;
     private Button undoButton;
@@ -37,7 +38,8 @@ public class PuzzleController implements SubController {
     private List<Integer> imageNumbers;
     private int imageCount = 1;
     
-    private PuzzleController(Pane gamePane, DynamicTools dynamicTools) {
+    private PuzzleController(Pane mainPane, Pane gamePane, DynamicTools dynamicTools) {
+        this.mainPane = mainPane;
         this.gamePane = gamePane;
         this.dynamicTools = dynamicTools;           
         imageNumbers = new ArrayList<>();
@@ -48,7 +50,13 @@ public class PuzzleController implements SubController {
     }
     
     @Override
-    public void startGame(Pane mainPane) {
+    public void startGame(String diffName) {
+        for (PuzzleScale difficulty : scale.values()) {
+            if (difficulty.getName().equals(diffName)) {
+                scale = difficulty;
+                break;
+            }
+        }
         dynamicTools.getBackButton().action(gamePane);
         setPuzzle();
         mainPane.setVisible(false);
@@ -75,7 +83,6 @@ public class PuzzleController implements SubController {
     }
 
     private void setPuzzle() {
-        scale = PuzzleScale.SIX_TO_SIX;
         if (imageCount >= imageNumbers.size()) {
             imageCount = 1;
         }

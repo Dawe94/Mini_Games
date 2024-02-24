@@ -10,12 +10,17 @@ public enum PuzzleScale {
     
     private PuzzleScale(int ratio) {
         this.ratio = ratio;
+        name = ratio + "x" + ratio;
     }
     
-    private int ratio;
+    private final int ratio;
+    private final String name;
     
     public int getRatio() {
         return ratio;
     }
-    
+
+    public String getName() {
+        return name;
+    }
 }

@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.StackPane?>
 
 <AnchorPane id="mainPane" fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="455.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mini_games.MainController">
    <children>
@@ -91,5 +92,6 @@
             <Label id="infoLabel" fx:id="infoLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="27.0" layoutY="14.0" prefHeight="123.0" prefWidth="274.0" textAlignment="CENTER" wrapText="true" />
          </children>
       </Pane>
+      <StackPane id="difficultyPane" fx:id="difficultyPane" cache="true" layoutX="145.0" layoutY="59.0" prefHeight="200.0" prefWidth="167.0" style="-fx-background-color: LIGHTGRAY;" visible="false" />
    </children>
 </AnchorPane>
