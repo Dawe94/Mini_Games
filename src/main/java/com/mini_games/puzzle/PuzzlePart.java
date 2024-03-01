@@ -41,9 +41,10 @@ public class PuzzlePart {
        clip();
     }
     
-    public void showPlaceOnImage() {
+    public void showPlaceOnImage(PuzzleScale scale) {
+        int fontSize = 90 / scale.getRatio();
         Label label = new Label(String.valueOf(place));
-        label.setStyle("-fx-text-fill: white; -fx-opacity: 0.85; -fx-font-size: 30;");
+        label.setStyle("-fx-text-fill: white; -fx-opacity: 0.85; -fx-font-size: "+fontSize+"; -fx-font-weight: bold;");
         pane.getChildren().add(label);  
     }
     

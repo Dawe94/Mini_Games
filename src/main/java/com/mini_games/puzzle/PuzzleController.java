@@ -51,7 +51,7 @@ public class PuzzleController implements SubController {
     
     @Override
     public void startGame(String diffName) {
-        for (PuzzleScale difficulty : scale.values()) {
+        for (PuzzleScale difficulty : PuzzleScale.values()) {
             if (difficulty.getName().equals(diffName)) {
                 scale = difficulty;
                 break;
@@ -92,25 +92,19 @@ public class PuzzleController implements SubController {
         slider = new RecordedSliding(puzzle);
         slider.shuffle();
         setDisableButtons(false);
-        System.out.println(puzzle.isReady());
     }
 
     private void handleKeyEvent(KeyCode keyCode) {
         if (!puzzle.isAnimationRunning()) {
             switch (keyCode) {
-                case UP:
-                    slider.moveUp(true);
-                    break;
-                case DOWN:
-                    slider.moveDown(true);
-                    break;
-                case LEFT:
-                    slider.moveLeft(true);
-                    break;
-                case RIGHT:
-                    slider.moveRight(true);
-                    break;
-                default:
+                case UP, W ->
+                    slider.moveUp(true);                    
+                case DOWN, S ->
+                    slider.moveDown(true);                    
+                case LEFT, A ->
+                    slider.moveLeft(true);                   
+                case RIGHT, D ->
+                    slider.moveRight(true);                                 
             }
         }
         checkResult();

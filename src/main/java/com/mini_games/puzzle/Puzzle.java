@@ -111,7 +111,7 @@ public class Puzzle {
                 currentPart = new PuzzlePart(position, i + 1);
             } else {
                 currentPart = new PuzzlePart(image, position, i + 1);
-                currentPart.showPlaceOnImage();
+                currentPart.showPlaceOnImage(scale);
             }
             currentPart.setSize(heightOfAPart, widthOfAPart);
             currentPart.getImagePart().setStyle("-fx-border-color: red;");

@@ -79,7 +79,7 @@ public class RecordedSliding implements Sliding {
         int index = 0;
         Direction current = Direction.getRandomDirection();
         Direction prev = current;
-        int numberOfSwaps = puzzle.getPartList().size() * 4;
+        int numberOfSwaps = puzzle.getPartList().size() * 3;
         while (index < numberOfSwaps) {
             if (move(current)) {
                 prev = current;
@@ -103,18 +103,13 @@ public class RecordedSliding implements Sliding {
     }
 
     private boolean move(Direction direction) {
-        switch (direction) {
-            case UP:
-                return moveUp(false);
-            case DOWN:
-                return moveDown(false);
-            case LEFT:
-                return moveLeft(false);
-            case RIGHT:
-                return moveRight(false);
-            default:
-                return false;
-        }
+        return switch (direction) {
+            case UP -> moveUp(false);
+            case DOWN -> moveDown(false);
+            case LEFT -> moveLeft(false);
+            case RIGHT -> moveRight(false);
+            default -> false;
+        };
     }
 
     private void deleteDoubleMills() {
