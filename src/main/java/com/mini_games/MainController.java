@@ -46,7 +46,6 @@ public class MainController implements Initializable {
     @FXML
     public void handlePuzzleButton() {
         puzzle = PuzzleController.getInstance(mainPane, puzzlePane, dynamicTools);
-        //puzzle.startGame(PuzzleScale.values());
         List<String> names = new ArrayList<>();
         for (PuzzleScale diff : PuzzleScale.values()) {
             names.add(diff.getName());

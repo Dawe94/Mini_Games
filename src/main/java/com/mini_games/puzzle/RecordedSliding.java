@@ -99,6 +99,8 @@ public class RecordedSliding implements Sliding {
     private void solve() {
         if (!recorder.isEmpty()) {
             undo(true);
+        } else {
+            puzzle.showBlank();
         }
     }
 

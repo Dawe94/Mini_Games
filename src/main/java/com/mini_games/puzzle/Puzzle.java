@@ -25,14 +25,15 @@ public class Puzzle {
         partList = new ArrayList<>();
         this.scale = scale;
         buildPuzzlePane(puzzlePane, image);
+        partList.get(scale.getRatio() * scale.getRatio() - 1).hideImage();
         animation = new TranslateTransition(Duration.seconds(0.2));
         animation.setOnFinished(eh -> setAnimationFalse());
     }
-    
+
     public boolean isAnimationRunning() {
         return animationRunning;
     }
-    
+
     public void setAnimationFalse() {
         animationRunning = false;
     }
@@ -40,7 +41,7 @@ public class Puzzle {
     public List<PuzzlePart> getPartList() {
         return partList;
     }
-    
+
     public int getBlankElement() {
         for (int i = 0; i < partList.size(); i++) {
             if (partList.get(i).isBlank()) {
@@ -53,13 +54,20 @@ public class Puzzle {
     public int getSize() {
         return partList.size();
     }
-    
+
     public PuzzleScale getPuzzleScale() {
         return scale;
     }
-    
+
     public TranslateTransition getAnimation() {
         return animation;
+    }
+
+    public void showBlank() {
+        int blankPos = getBlankElement();
+        if (blankPos >= 0) {
+            partList.get(blankPos).showImage();
+        }
     }
 
     public void shuffle() {
@@ -77,7 +85,9 @@ public class Puzzle {
 
     public boolean isReady() {
         for (int i = 0; i < partList.size(); i++) {
-            if (partList.get(i).getPlace() != i + 1) return false;
+            if (partList.get(i).getPlace() != i + 1) {
+                return false;
+            }
         }
         return true;
     }
@@ -99,28 +109,23 @@ public class Puzzle {
     }
 
     private void buildPuzzlePane(Pane puzzlePane, Image image) {
-        double heightOfAPart = puzzlePane.getHeight() / scale.getRatio();
-        double widthOfAPart = puzzlePane.getWidth() / scale.getRatio();
-        int numOfParts = scale.getRatio() * scale.getRatio();
+        double sizeOfPart = puzzlePane.getHeight() / scale.getRatio();
         double currHeight = 0;
         double currWidth = 0;
+        int numOfParts = scale.getRatio() * scale.getRatio();
         for (int i = 0; i < numOfParts; i++) {
             Coordinates position = new Coordinates(currHeight, currWidth);
             PuzzlePart currentPart;
-            if (i == numOfParts - 1) {
-                currentPart = new PuzzlePart(position, i + 1);
-            } else {
-                currentPart = new PuzzlePart(image, position, i + 1);
-                currentPart.showPlaceOnImage(scale);
-            }
-            currentPart.setSize(heightOfAPart, widthOfAPart);
+            currentPart = new PuzzlePart(image, position, i + 1);
+            currentPart.showPlaceOnImage(scale);
+            currentPart.setSize(sizeOfPart, sizeOfPart);
             currentPart.getImagePart().setStyle("-fx-border-color: red;");
-            currentPart.setViewPort(currHeight, currWidth, heightOfAPart, widthOfAPart);
-            currentPart.decrementSize();           
+            currentPart.setViewPort(currHeight, currWidth, sizeOfPart, sizeOfPart);
+            currentPart.decrementSize();
             partList.add(currentPart);
             puzzlePane.getChildren().add(currentPart.getImagePane());
-            currHeight = (i + 1) % scale.getRatio() == 0 ? currHeight + heightOfAPart : currHeight;
-            currWidth = (i + 1) % scale.getRatio() == 0 ? 0 : currWidth + widthOfAPart;
+            currHeight = (i + 1) % scale.getRatio() == 0 ? currHeight + sizeOfPart : currHeight;
+            currWidth = (i + 1) % scale.getRatio() == 0 ? 0 : currWidth + sizeOfPart;
         }
     }
 

@@ -25,11 +25,12 @@ public class PuzzleController implements SubController {
         return controller;
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Variables">
     private Image puzzleImage;
     private final Pane gamePane;
     private final Pane mainPane;
     private Pane imagePane;
-    private Button solveButton;
+    private Button variableButton;
     private Button undoButton;
     private Puzzle puzzle;
     private PuzzleScale scale;
@@ -37,6 +38,7 @@ public class PuzzleController implements SubController {
     private final DynamicTools dynamicTools;
     private List<Integer> imageNumbers;
     private int imageCount = 1;
+//</editor-fold>
     
     private PuzzleController(Pane mainPane, Pane gamePane, DynamicTools dynamicTools) {
         this.mainPane = mainPane;
@@ -59,6 +61,7 @@ public class PuzzleController implements SubController {
         }
         dynamicTools.getBackButton().action(gamePane);
         setPuzzle();
+        setButtons();
         mainPane.setVisible(false);
         gamePane.setVisible(true);
     }
@@ -66,9 +69,8 @@ public class PuzzleController implements SubController {
     @Override
     public void unfold() {
         imagePane = (Pane) checkedLookup(gamePane, "#imagePane");
-        solveButton = (Button)checkedLookup(gamePane, "#solveButton");
-        undoButton = (Button)checkedLookup(gamePane, "#undoButton");
-        setButtons();       
+        variableButton = (Button)checkedLookup(gamePane, "#mainButton");
+        undoButton = (Button)checkedLookup(gamePane, "#undoButton");       
         gamePane.setOnKeyPressed(eh -> handleKeyEvent(eh.getCode()));       
     }
 
@@ -78,7 +80,7 @@ public class PuzzleController implements SubController {
     }
     
     private void setDisableButtons(boolean value) {
-        solveButton.setDisable(value);
+        variableButton.setDisable(value);
         undoButton.setDisable(value);
     }
 
@@ -95,34 +97,46 @@ public class PuzzleController implements SubController {
     }
 
     private void handleKeyEvent(KeyCode keyCode) {
-        if (!puzzle.isAnimationRunning()) {
+        if (!puzzle.isAnimationRunning() && !puzzle.isReady()) {
             switch (keyCode) {
                 case UP, W ->
                     slider.moveUp(true);                    
                 case DOWN, S ->
                     slider.moveDown(true);                    
                 case LEFT, A ->
-                    slider.moveLeft(true);                   
+                    slider.moveLeft(true);
                 case RIGHT, D ->
-                    slider.moveRight(true);                                 
+                    slider.moveRight(true);
             }
         }
         checkResult();
     }
 
     private void setButtons() {
-        solveButton.setOnAction(eh -> {
+        variableButton.setText("Solve");
+        variableButton.setOnAction(eh -> {
             setDisableButtons(true);
             slider.solve(true);
         });
-        undoButton.setOnAction(eh -> slider.undo(true));
+        undoButton.setOnAction(eh -> { 
+            slider.undo(true);
+            checkResult();
+                });
         undoButton.setFocusTraversable(false);
-        solveButton.setFocusTraversable(false);
+        variableButton.setFocusTraversable(false);
     }
 
     private void checkResult() {
         if (puzzle.isReady()) {
             System.out.println("WIN!!!!!!!");
+            puzzle.showBlank();
+            undoButton.setDisable(true);
+            variableButton.setText("Next");
+            variableButton.setDisable(false);
+            variableButton.setOnAction(eh -> {
+                restore();
+                startGame(scale.getName());
+            });
         }     
     }
 

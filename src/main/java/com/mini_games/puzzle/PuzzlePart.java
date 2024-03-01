@@ -97,8 +97,16 @@ public class PuzzlePart {
         return pane;
     }
     
+    public void hideImage() {
+        pane.setVisible(false);
+    }
+    
+    public void showImage() {
+        pane.setVisible(true);
+    }
+    
     public boolean isBlank() {
-        return imageView.getImage() == null;
+        return !pane.isVisible();
     }
     
     private void clip() {       

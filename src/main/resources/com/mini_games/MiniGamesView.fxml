@@ -97,7 +97,7 @@
                </effect>
             </ImageView>
             <Pane id="imagePane" fx:id="imagePane" layoutX="53.0" layoutY="31.0" prefHeight="350.0" prefWidth="350.0" style="-fx-background-color: #a9a9a9;" />
-            <Button id="solveButton" fx:id="solveButton" layoutX="193.0" layoutY="393.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="69.0" text="Solve" />
+            <Button id="mainButton" fx:id="mainButton" layoutX="193.0" layoutY="393.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="69.0" text="Solve" />
             <Button id="undoButton" fx:id="undoButton" layoutX="29.0" layoutY="408.0" mnemonicParsing="false" text="Undo" />
          </children>
       </Pane>
